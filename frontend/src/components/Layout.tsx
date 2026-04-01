@@ -6,7 +6,7 @@ export default function Layout() {
         <div className="flex h-screen overflow-hidden">
             <Sidebar />
             <div className="flex-1 flex flex-col overflow-hidden bg-slate-50">
-                <main className="flex-1 p-8 flex flex-col overflow-hidden">
+                <main className="flex-1 p-8 flex flex-col overflow-y-auto">
                     <Outlet />
                 </main>
                 <footer className="py-3 text-center text-sm border-t border-slate-200 bg-white">
