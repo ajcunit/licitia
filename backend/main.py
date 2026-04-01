@@ -4,15 +4,29 @@ from contextlib import asynccontextmanager
 import os
 import httpx
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from database import engine, Base, SessionLocal
 from routers import departamentos, empleados, contratos, sincronizacion, cpv, config, superbuscador, contratos_menores, favoritos, auth, adjudicatarios, auditoria
 from services.scheduler_service import start_scheduler, shutdown_scheduler
 from services.auth_service import AuthService
 import models
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables with retry
+import time
+for i in range(5):
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("INFO:    Database tables synchronized")
+        break
+    except Exception as e:
+        if i == 4:
+            print(f"ERROR:   Could not sync database: {str(e)}")
+            # Don't raise here, let it fail naturally if needed, 
+            # though usually create_all failing means the app won't work
+        else:
+            print(f"INFO:    Waiting for database... (attempt {i+1}/5)")
+            time.sleep(2)
+
 
 def init_db():
     db = SessionLocal()
@@ -105,15 +119,61 @@ def health_check():
 # Include the API router into the main app with /api prefix
 app.mount("/api", api_app)
 
-# Mount frontend static files
-# In local development, we point to the build output of the frontend
-static_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
-if os.path.exists(static_path):
-    app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
+# Mount frontend static files logic
+# Search for static files in multiple possible locations
+# 1. ./static (Docker default)
+# 2. ../frontend/dist (Local dev)
+# 3. ./frontend/dist (Alternative layout)
+possible_paths = [
+    os.path.join(os.path.dirname(__file__), "static"),
+    os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")),
+    os.path.join(os.getcwd(), "static"),
+    os.path.join(os.getcwd(), "frontend", "dist")
+]
 
-    # Catch-all for SPA client-side routing
-    @app.exception_handler(404)
-    async def not_found_handler(request, exc):
-        return FileResponse(os.path.join(static_path, "index.html"))
+static_path = None
+for path in possible_paths:
+    if os.path.exists(os.path.join(path, "index.html")):
+        static_path = path
+        break
+
+if static_path:
+    print(f"INFO:    Found static files at {static_path}")
+    app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
 else:
-    print(f"Warning: Static files path not found at {static_path}")
+    print(f"ERROR:   Frontend build NOT found. Searched in: {possible_paths}")
+
+# Debug endpoint to check static files
+@app.get("/api/health/static")
+async def check_static():
+    results = []
+    for path in possible_paths:
+        exists = os.path.exists(path)
+        has_index = os.path.exists(os.path.join(path, "index.html")) if exists else False
+        results.append({
+            "path": path,
+            "exists": exists,
+            "has_index": has_index
+        })
+    return {
+        "current_working_directory": os.getcwd(),
+        "static_path_used": static_path,
+        "search_results": results
+    }
+
+# SPA Catch-all (must be at the end)
+@app.exception_handler(404)
+async def spa_catch_all(request, exc):
+    # Allow /api/ routes to return proper 404s
+    if request.url.path.startswith("/api/"):
+        return JSONResponse(status_code=404, content={"detail": "API endpoint not found"})
+    
+    # Serve index.html for all other routes to let React handle the routing
+    if static_path:
+        index_file = os.path.join(static_path, "index.html")
+        if os.path.exists(index_file):
+            return FileResponse(index_file)
+    
+    return JSONResponse(status_code=404, content={"detail": f"Frontend index.html not found. Search path: {static_path}"})
+
+
