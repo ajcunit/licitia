@@ -61,48 +61,49 @@ app.add_middleware(
 from fastapi import Depends
 from services.auth_service import get_current_user
 
-# Auth is public
-app.include_router(auth.router)
+# API Router for all endpoints
+api_app = FastAPI()
 
-# SSE stream endpoints (handle auth manually via query param - EventSource can't send headers)
-app.include_router(sincronizacion.router_public)
+# Auth is public
+api_app.include_router(auth.router)
+
+# SSE stream endpoints
+api_app.include_router(sincronizacion.router_public)
 
 # Protected APIs
 secure_deps = [Depends(get_current_user)]
-app.include_router(departamentos.router, dependencies=secure_deps)
-app.include_router(empleados.router, dependencies=secure_deps)
-app.include_router(contratos.router, dependencies=secure_deps)
-app.include_router(sincronizacion.router, dependencies=secure_deps)
-app.include_router(cpv.router, dependencies=secure_deps)
-app.include_router(config.router, dependencies=secure_deps)
-app.include_router(superbuscador.router, dependencies=secure_deps)
-app.include_router(contratos_menores.router, dependencies=secure_deps)
-app.include_router(favoritos.router, dependencies=secure_deps)
-app.include_router(adjudicatarios.router)
-app.include_router(auditoria.router, dependencies=secure_deps)
+api_app.include_router(departamentos.router, dependencies=secure_deps)
+api_app.include_router(empleados.router, dependencies=secure_deps)
+api_app.include_router(contratos.router, dependencies=secure_deps)
+api_app.include_router(sincronizacion.router, dependencies=secure_deps)
+api_app.include_router(cpv.router, dependencies=secure_deps)
+api_app.include_router(config.router, dependencies=secure_deps)
+api_app.include_router(superbuscador.router, dependencies=secure_deps)
+api_app.include_router(contratos_menores.router, dependencies=secure_deps)
+api_app.include_router(favoritos.router, dependencies=secure_deps)
+api_app.include_router(adjudicatarios.router)
+api_app.include_router(auditoria.router, dependencies=secure_deps)
 
-@app.get("/proxy-json")
+@api_app.get("/proxy-json")
 def proxy_json(url: str):
-    """Proxy for fetching external JSON to avoid CORS issues"""
     try:
-        # Add a common user-agent to avoid being blocked
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        headers = {'User-Agent': 'Mozilla/5.0'}
         response = httpx.get(url, timeout=30.0, follow_redirects=True, headers=headers)
         response.raise_for_status()
         return response.json()
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error fetching JSON: {str(e)}")
 
-@app.get("/ping")
+@api_app.get("/ping")
 def ping():
     return {"ping": "pong"}
 
-# Root endpoint removed to allow frontend serving at /
-
-
-@app.get("/health")
+@api_app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+# Include the API router into the main app with /api prefix
+app.mount("/api", api_app)
 
 # Mount frontend static files
 # In Docker, frontend files will be in backend/static/
