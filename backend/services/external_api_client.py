@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 ALLOWED_PROXY_DOMAINS = [
     "analisi.transparenciacatalunya.cat",
     "governobert.gencat.cat",
+    "contractaciopublica.cat",
+    "contractaciopublica.gencat.cat",
 ]
 
 DEFAULT_TIMEOUT = 30.0
