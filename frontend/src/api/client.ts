@@ -715,6 +715,21 @@ class ApiClient {
         return this.request<Duplicado[]>(`/sincronizacion/duplicados/${params}`);
     }
 
+    // PPT Generator
+    async generatePPTIndex(urls: string[]): Promise<any[]> {
+        return this.request<{ success: boolean, index: any[] }>('/ppt/generate-index', {
+            method: 'POST',
+            body: JSON.stringify({ urls })
+        }).then(res => res.index);
+    }
+
+    async generatePPTSection(title: string, instructions: string, urls: string[]): Promise<string> {
+        return this.request<{ success: boolean, content: string }>('/ppt/generate-section', {
+            method: 'POST',
+            body: JSON.stringify({ title, instructions, urls })
+        }).then(res => res.content);
+    }
+
     async getDuplicadosCount(): Promise<{ pendientes: number }> {
         return this.request<{ pendientes: number }>('/sincronizacion/duplicados/count');
     }

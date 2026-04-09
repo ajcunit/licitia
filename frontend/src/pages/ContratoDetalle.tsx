@@ -20,10 +20,13 @@ import {
     Download,
     Users,
     Layers,
+    Plus,
 } from 'lucide-react';
+import { usePPTCart } from '../context/PPTContext';
 
 
 export default function ContratoDetalle() {
+    const { addDocument } = usePPTCart();
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [contrato, setContrato] = useState<Contrato | null>(null);
@@ -916,18 +919,37 @@ export default function ContratoDetalle() {
                                                  </h5>
                                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                                      {documentsJson.map((doc, idx) => (
-                                                         <a 
-                                                             key={idx}
-                                                             href={doc.url}
-                                                             target="_blank"
-                                                             rel="noopener noreferrer"
-                                                             className="flex items-center justify-between p-4 rounded-xl bg-slate-50/20 border border-slate-200 hover:border-primary-400 hover:bg-white hover:shadow-lg transition-all text-sm group"
-                                                         >
-                                                             <span className="truncate flex-1 text-slate-700 font-bold group-hover:text-primary-700">{doc.label}</span>
-                                                             <div className="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-primary-600 group-hover:border-primary-100 shadow-sm ml-3 flex-shrink-0">
-                                                                 <Download size={16} />
+                                                         <div key={idx} className="flex flex-col rounded-xl bg-slate-50/20 border border-slate-200 hover:border-primary-400 hover:bg-white hover:shadow-lg transition-all text-sm group overflow-hidden">
+                                                             <a 
+                                                                 href={doc.url}
+                                                                 target="_blank"
+                                                                 rel="noopener noreferrer"
+                                                                 className="flex items-center justify-between p-4 flex-1"
+                                                             >
+                                                                 <span className="truncate flex-1 text-slate-700 font-bold group-hover:text-primary-700">{doc.label}</span>
+                                                                 <div className="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 group-hover:text-primary-600 group-hover:border-primary-100 shadow-sm ml-3 flex-shrink-0">
+                                                                     <Download size={16} />
+                                                                 </div>
+                                                             </a>
+                                                             <div className="bg-slate-50 border-t border-slate-100 p-2 flex justify-end">
+                                                                 <button
+                                                                     onClick={(e) => {
+                                                                         e.stopPropagation();
+                                                                         addDocument({
+                                                                             id: `${contrato?.codi_expedient}-${idx}`,
+                                                                             url: doc.url,
+                                                                             titol: doc.label,
+                                                                             expedient: contrato?.codi_expedient || 'Desconegut',
+                                                                             origen: 'Licitia'
+                                                                         });
+                                                                     }}
+                                                                     className="btn btn-primary text-xs py-1 px-3"
+                                                                 >
+                                                                     <Plus size={14} className="mr-1"/>
+                                                                     Usar de Plantilla
+                                                                 </button>
                                                              </div>
-                                                         </a>
+                                                         </div>
                                                      ))}
                                                  </div>
                                              </div>

@@ -23,7 +23,7 @@ import models
 from routers import (
     departamentos, empleados, contratos, sincronizacion,
     cpv, config, superbuscador, contratos_menores, favoritos,
-    auth, adjudicatarios, auditoria, setup,
+    auth, adjudicatarios, auditoria, setup, ppt,
 )
 
 logger = logging.getLogger(__name__)
@@ -93,6 +93,7 @@ api_app.include_router(contratos_menores.router, dependencies=secure_deps)
 api_app.include_router(favoritos.router, dependencies=secure_deps)
 api_app.include_router(adjudicatarios.router)
 api_app.include_router(auditoria.router, dependencies=secure_deps)
+api_app.include_router(ppt.router, dependencies=secure_deps)
 
 
 # Proxy JSON SEGUR — whitelist de dominis + rate limit

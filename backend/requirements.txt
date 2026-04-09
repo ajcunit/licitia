@@ -1,31 +1,48 @@
-# Core
-fastapi>=0.109.0
-uvicorn[standard]>=0.27.0
-pydantic>=2.0.0
-pydantic-settings>=2.0.0
-
-# Database
-sqlalchemy>=2.0.25
-psycopg2-binary>=2.9.9
-
-# Auth
-python-jose[cryptography]>=3.3.0
-argon2-cffi>=23.1.0
-python-multipart>=0.0.6
-
-# HTTP
-httpx>=0.26.0
-
-# Rate Limiting
-slowapi>=0.1.9
-
-# Scheduling
-apscheduler>=3.10.0
-
-# LDAP (optional)
-ldap3>=2.9.0
-
-# Utils
-python-dotenv>=1.0.0
-python-dateutil>=2.8.0
-aiofiles>=23.2.1
+aiofiles==25.1.0
+annotated-doc==0.0.4
+annotated-types==0.7.0
+anyio==4.13.0
+APScheduler==3.11.2
+argon2-cffi==25.1.0
+argon2-cffi-bindings==25.1.0
+certifi==2026.2.25
+cffi==2.0.0
+click==8.3.2
+cryptography==46.0.7
+Deprecated==1.3.1
+ecdsa==0.19.2
+fastapi==0.135.3
+greenlet==3.4.0
+h11==0.16.0
+httpcore==1.0.9
+httptools==0.7.1
+httpx==0.28.1
+idna==3.11
+ldap3==2.9.1
+limits==5.8.0
+packaging==26.0
+psycopg2-binary==2.9.11
+pyasn1==0.6.3
+pycparser==3.0
+pydantic==2.12.5
+pydantic-settings==2.13.1
+pydantic_core==2.41.5
+PyMuPDF==1.27.2.2
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
+python-jose==3.5.0
+python-multipart==0.0.24
+PyYAML==6.0.3
+rsa==4.9.1
+six==1.17.0
+slowapi==0.1.9
+SQLAlchemy==2.0.49
+starlette==1.0.0
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzlocal==5.3.1
+uvicorn==0.44.0
+uvloop==0.22.1
+watchfiles==1.1.1
+websockets==16.0
+wrapt==2.1.2
