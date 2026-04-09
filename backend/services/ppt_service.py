@@ -5,7 +5,6 @@ from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
 import json
 
-from core.rate_limiter import external_api_limiter
 from services.ai_service import AIService
 from services.gemini_service import GeminiService
 from services.ollama_service import OllamaService

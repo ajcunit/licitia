@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from core.database import get_db
 from core.dependencies import get_current_user
 from services.ppt_service import PPTService
-from core.rate_limiter import sync_api_limiter, slowapi_limiter
+from core.rate_limiter import limiter
 from starlette.requests import Request
 
 router = APIRouter(prefix="/ppt", tags=["Generador PPT"])
@@ -23,7 +23,7 @@ class SectionRequest(BaseModel):
 
 
 @router.post("/generate-index")
-@slowapi_limiter.limit("5/minute")
+@limiter.limit("5/minute")
 async def generate_ppt_index(
     request: Request,
     payload: IndexRequest,
@@ -39,7 +39,7 @@ async def generate_ppt_index(
 
 
 @router.post("/generate-section")
-@slowapi_limiter.limit("10/minute")
+@limiter.limit("10/minute")
 async def generate_ppt_section(
     request: Request,
     payload: SectionRequest,
