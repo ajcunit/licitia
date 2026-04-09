@@ -4,7 +4,7 @@ from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 
 from core.database import get_db
-from core.security import get_current_user
+from core.dependencies import get_current_user
 from services.ppt_service import PPTService
 from core.rate_limiter import sync_api_limiter, slowapi_limiter
 from starlette.requests import Request
