@@ -30,6 +30,7 @@ class Empleado(Base):
     activo = Column(Boolean, default=True)
     hashed_password = Column(String(255), nullable=True) # Per autenticació JWT
     permiso_auditoria = Column(Boolean, default=False)
+    permiso_pla_contractacio = Column(Boolean, default=False)
     fecha_creacion = Column(DateTime, server_default=func.now())
 
     __table_args__ = (
@@ -427,3 +428,28 @@ class AuditLog(Base):
     ip_address = Column(String(45))
     details = Column(Text)
     success = Column(String(10))
+
+
+class PlaContractacioEntrada(Base):
+    """Entrada del Pla de Contractació Anual."""
+    __tablename__ = "pla_contractacio_entrades"
+
+    id = Column(Integer, primary_key=True, index=True)
+    any_exercici = Column(Integer, nullable=False, index=True)
+    trimestre = Column(Integer, nullable=False)  # 1, 2, 3 or 4
+    objecte = Column(Text, nullable=False)
+    tipus_contracte = Column(String(100))
+    ambit_responsable = Column(String(255))
+    observacions = Column(Text)
+    subvencionat = Column(Boolean, default=False)
+    import_estimat = Column(Numeric(15, 2), nullable=True)
+
+    # Optional link to an existing registered contract
+    contrato_id = Column(Integer, ForeignKey("contratos.id"), nullable=True)
+    contrato = relationship("Contrato", foreign_keys=[contrato_id])
+
+    # Audit
+    creat_per_id = Column(Integer, ForeignKey("empleados.id"), nullable=True)
+    creat_per = relationship("Empleado", foreign_keys=[creat_per_id])
+    creat_at = Column(DateTime, server_default=func.now())
+    actualitzat_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

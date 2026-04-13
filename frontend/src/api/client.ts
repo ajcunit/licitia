@@ -17,6 +17,7 @@ export interface Empleado {
     rol: string;
     activo: boolean;
     permiso_auditoria?: boolean;
+    permiso_pla_contractacio?: boolean;
     fecha_creacion: string;
     departamento?: Departamento;
 }
@@ -867,6 +868,35 @@ class ApiClient {
     async getTodosFavoritos(): Promise<ContratoFavorito[]> {
         return this.request<ContratoFavorito[]>('/favoritos/todos');
     }
+
+    // ── Pla de Contractació ──────────────────────────────────────────────
+    async getPlaContractacio(year?: number): Promise<PlaContractacioEntrada[]> {
+        const q = year ? `?any_exercici=${year}` : '';
+        return this.request<PlaContractacioEntrada[]>(`/pla-contractacio${q}`);
+    }
+
+    async getContractescaducant(year?: number): Promise<ContracteCaducant[]> {
+        const q = year ? `?any_exercici=${year}` : '';
+        return this.request<ContracteCaducant[]>(`/pla-contractacio/contractes-caducant${q}`);
+    }
+
+    async createPlaEntrada(data: PlaContractacioEntradaCreate): Promise<PlaContractacioEntrada> {
+        return this.request<PlaContractacioEntrada>('/pla-contractacio', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async updatePlaEntrada(id: number, data: PlaContractacioEntradaUpdate): Promise<PlaContractacioEntrada> {
+        return this.request<PlaContractacioEntrada>(`/pla-contractacio/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async deletePlaEntrada(id: number): Promise<void> {
+        return this.request(`/pla-contractacio/${id}`, { method: 'DELETE' });
+    }
 }
 
 export interface CarpetaFavorita {
@@ -885,5 +915,37 @@ export interface ContratoFavorito {
     fecha_agregado: string;
     contrato?: Contrato;
 }
+
+export interface ContracteCaducant {
+    id: number;
+    trimestre: number;
+    codi_expedient: string;
+    objecte_contracte?: string;
+    adjudicatari_nom?: string;
+    tipus_contracte?: string;
+    data_finalitzacio?: string;
+    import_adjudicacio?: number;
+    estat_actual?: string;
+    departament?: string;
+}
+
+export interface PlaContractacioEntrada {
+    id: number;
+    any_exercici: number;
+    trimestre: number;
+    objecte: string;
+    tipus_contracte?: string;
+    ambit_responsable?: string;
+    observacions?: string;
+    subvencionat: boolean;
+    import_estimat?: number;
+    contrato_id?: number;
+    codi_expedient?: string;
+    creat_per_nom?: string;
+    creat_at?: string;
+}
+
+export type PlaContractacioEntradaCreate = Omit<PlaContractacioEntrada, 'id' | 'codi_expedient' | 'creat_per_nom' | 'creat_at'>;
+export type PlaContractacioEntradaUpdate = Partial<PlaContractacioEntradaCreate>;
 
 export const api = new ApiClient(API_BASE_URL);

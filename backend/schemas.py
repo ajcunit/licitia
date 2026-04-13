@@ -37,6 +37,7 @@ class EmpleadoBase(BaseModel):
     email: str
     rol: str = "empleado"
     permiso_auditoria: Optional[bool] = False
+    permiso_pla_contractacio: Optional[bool] = False
 
 
 class EmpleadoCreate(EmpleadoBase):
@@ -51,6 +52,7 @@ class EmpleadoUpdate(BaseModel):
     rol: Optional[str] = None
     activo: Optional[bool] = None
     permiso_auditoria: Optional[bool] = None
+    permiso_pla_contractacio: Optional[bool] = None
     password: Optional[str] = None
 
 
@@ -507,3 +509,47 @@ class ContratoFavoritoByExpedienteCreate(BaseModel):
 
 class CarpetaFavoritaConContratos(CarpetaFavoritaResponse):
     contratos: List[ContratoFavoritoResponse] = []
+
+
+# ── Pla de Contractació ──────────────────────────────────────────────────────
+
+class PlaContractacioEntradaCreate(BaseModel):
+    any_exercici: int
+    trimestre: int  # 1-4
+    objecte: str
+    tipus_contracte: Optional[str] = None
+    ambit_responsable: Optional[str] = None
+    observacions: Optional[str] = None
+    subvencionat: bool = False
+    import_estimat: Optional[float] = None
+    contrato_id: Optional[int] = None
+
+
+class PlaContractacioEntradaUpdate(BaseModel):
+    trimestre: Optional[int] = None
+    objecte: Optional[str] = None
+    tipus_contracte: Optional[str] = None
+    ambit_responsable: Optional[str] = None
+    observacions: Optional[str] = None
+    subvencionat: Optional[bool] = None
+    import_estimat: Optional[float] = None
+    contrato_id: Optional[int] = None
+
+
+class PlaContractacioEntradaRead(BaseModel):
+    id: int
+    any_exercici: int
+    trimestre: int
+    objecte: str
+    tipus_contracte: Optional[str] = None
+    ambit_responsable: Optional[str] = None
+    observacions: Optional[str] = None
+    subvencionat: bool
+    import_estimat: Optional[float] = None
+    contrato_id: Optional[int] = None
+    codi_expedient: Optional[str] = None   # denormalized from contrato
+    creat_per_nom: Optional[str] = None
+    creat_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True

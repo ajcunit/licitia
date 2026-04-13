@@ -18,7 +18,8 @@ import {
     Sun,
     User,
     ChevronUp,
-    Shield
+    Shield,
+    ClipboardList
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -76,6 +77,9 @@ export default function Sidebar() {
         { path: '/favoritos', icon: Star, label: 'Favorits' },
         ...(user?.permiso_auditoria || user?.rol === 'admin' 
             ? [{ path: '/auditoria', icon: Flag, label: 'Auditoria/Alertes' }] 
+            : []),
+        ...(user?.rol === 'admin' || user?.rol === 'responsable_contratacion' || user?.permiso_pla_contractacio
+            ? [{ path: '/pla-contractacio', icon: ClipboardList, label: 'Pla Contractació' }]
             : []),
     ];
 

@@ -14,7 +14,8 @@ import {
     X,
     Loader2,
     AlertCircle,
-    Flag
+    Flag,
+    ClipboardList
 } from 'lucide-react';
 
 export default function EmpleadoDetalle() {
@@ -35,7 +36,8 @@ export default function EmpleadoDetalle() {
         rol: 'empleado',
         password: '',
         activo: true,
-        permiso_auditoria: false
+        permiso_auditoria: false,
+        permiso_pla_contractacio: false
     });
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
@@ -76,7 +78,8 @@ export default function EmpleadoDetalle() {
                 rol: emp.rol,
                 password: '',
                 activo: emp.activo,
-                permiso_auditoria: emp.permiso_auditoria || false
+                permiso_auditoria: emp.permiso_auditoria || false,
+                permiso_pla_contractacio: emp.permiso_pla_contractacio || false
             });
             setError(null);
         } catch (err) {
@@ -100,7 +103,8 @@ export default function EmpleadoDetalle() {
                 rol: formData.rol,
                 password: formData.password || undefined,
                 activo: formData.activo,
-                permiso_auditoria: formData.permiso_auditoria
+                permiso_auditoria: formData.permiso_auditoria,
+                permiso_pla_contractacio: (formData as any).permiso_pla_contractacio
             };
 
             if (isNew) {
@@ -327,34 +331,50 @@ export default function EmpleadoDetalle() {
                                             onChange={(e) => setFormData({...formData, password: e.target.value})}
                                         />
                                     </div>
-                                    <div className="md:col-span-2 flex items-center justify-between p-4 bg-slate-50 rounded-xl mt-2 border border-slate-100">
-                                        <div className="flex flex-col gap-1">
+                                    <div className="md:col-span-2 p-4 bg-slate-50 rounded-xl mt-2 border border-slate-100 space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex flex-col gap-1">
+                                                <label className="flex items-center gap-2 cursor-pointer group">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        className="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                                                        checked={formData.permiso_auditoria}
+                                                        onChange={(e) => setFormData({...formData, permiso_auditoria: e.target.checked})}
+                                                    />
+                                                    <span className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors flex items-center gap-2">
+                                                        <Flag size={16} className="text-red-500" />
+                                                        Accés a Mòdul d'Auditoria
+                                                    </span>
+                                                </label>
+                                                <span className="text-xs text-slate-500 ml-6">Permet veure les alertes (red flags) i les anàlisis de dades per a Intervenció.</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-sm font-medium text-slate-500">Compte Actiu</span>
+                                                <label className="relative inline-flex items-center cursor-pointer">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        className="sr-only peer"
+                                                        checked={formData.activo}
+                                                        onChange={(e) => setFormData({...formData, activo: e.target.checked})}
+                                                    />
+                                                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="border-t border-slate-200 pt-3">
                                             <label className="flex items-center gap-2 cursor-pointer group">
                                                 <input 
                                                     type="checkbox" 
-                                                    className="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
-                                                    checked={formData.permiso_auditoria}
-                                                    onChange={(e) => setFormData({...formData, permiso_auditoria: e.target.checked})}
+                                                    className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                                                    checked={(formData as any).permiso_pla_contractacio || false}
+                                                    onChange={(e) => setFormData({...formData, permiso_pla_contractacio: e.target.checked} as any)}
                                                 />
-                                                <span className="font-semibold text-slate-800 group-hover:text-primary-600 transition-colors flex items-center gap-2">
-                                                    <Flag size={16} className="text-red-500" />
-                                                    Accés a Mòdul d'Auditoria
+                                                <span className="font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors flex items-center gap-2">
+                                                    <ClipboardList size={16} className="text-indigo-500" />
+                                                    Accés al Pla de Contractació
                                                 </span>
                                             </label>
-                                            <span className="text-xs text-slate-500 ml-6">Permet veure les alertes (red flags) i les anàlisis de dades per a Intervenció.</span>
-                                        </div>
-                                        
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-sm font-medium text-slate-500">Compte Actiu</span>
-                                            <label className="relative inline-flex items-center cursor-pointer">
-                                                <input 
-                                                    type="checkbox" 
-                                                    className="sr-only peer"
-                                                    checked={formData.activo}
-                                                    onChange={(e) => setFormData({...formData, activo: e.target.checked})}
-                                                />
-                                                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                                            </label>
+                                            <span className="text-xs text-slate-500 ml-6">Permet visualitzar i editar el pla de contractació anual per trimestres.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -458,6 +478,20 @@ export default function EmpleadoDetalle() {
                                                 <label className="block text-xs font-bold text-red-800 uppercase tracking-wider mb-1">Mòdul d'Auditoria</label>
                                                 <p className="text-red-900 font-medium text-sm">
                                                     Aquest usuari té habilitat el permís especial per accedir a les alertes de control i "red flags" d'intervenció.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {empleado?.permiso_pla_contractacio && (
+                                        <div className="flex gap-4 md:col-span-2 mt-2 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                                            <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                                                <ClipboardList size={20} />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-indigo-800 uppercase tracking-wider mb-1">Pla de Contractació</label>
+                                                <p className="text-indigo-900 font-medium text-sm">
+                                                    Aquest usuari té habilitat l'accés al mòdul de planificació anual de contractació.
                                                 </p>
                                             </div>
                                         </div>
