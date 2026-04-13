@@ -55,72 +55,99 @@ async def generate_ppt_section(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-class DraftSaveRequest(BaseModel):
-    titol: str
-    contrato_id: Optional[int] = None
-    contingut_json: str
+class ProyectoCreate(BaseModel):
+    nombre: str
 
-@router.get("/esborranys")
-def get_user_drafts(db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
-    from models import PPTEsborrany, Contrato
-    drafts = db.query(PPTEsborrany).filter(PPTEsborrany.empleado_id == current_user.id).order_by(PPTEsborrany.fecha_modificacion.desc()).all()
+class DocumentoUpdateRequest(BaseModel):
+    contingut_json: Optional[str] = None
+    documentos_referencia_json: Optional[str] = None
+
+@router.get("/proyectos")
+def get_user_proyectos(db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
+    from models import ProyectoGeneracion
+    proyectos = db.query(ProyectoGeneracion).filter(ProyectoGeneracion.empleado_id == current_user.id).order_by(ProyectoGeneracion.fecha_modificacion.desc()).all()
     res = []
-    for d in drafts:
-        contract = db.query(Contrato).filter(Contrato.id == d.contrato_id).first() if d.contrato_id else None
+    for p in proyectos:
+        docs = [{"id": d.id, "tipo_documento": d.tipo_documento} for d in p.documentos]
         res.append({
-            "id": d.id,
-            "titol": d.titol,
-            "contrato_id": d.contrato_id,
-            "expedient": contract.codi_expedient if contract else None,
-            "fecha_modificacion": d.fecha_modificacion,
+            "id": p.id,
+            "nombre": p.nombre,
+            "fecha_modificacion": p.fecha_modificacion,
+            "documentos": docs
         })
     return res
 
-@router.get("/esborranys/{draft_id}")
-def get_draft(draft_id: int, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
-    from models import PPTEsborrany
-    draft = db.query(PPTEsborrany).filter(PPTEsborrany.id == draft_id, PPTEsborrany.empleado_id == current_user.id).first()
-    if not draft:
-        raise HTTPException(status_code=404, detail="Esborrany no trobat")
+@router.post("/proyectos")
+def create_proyecto(payload: ProyectoCreate, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
+    from models import ProyectoGeneracion, DocumentoGeneracion
+    proyecto = ProyectoGeneracion(
+        empleado_id=current_user.id,
+        nombre=payload.nombre
+    )
+    db.add(proyecto)
+    db.commit()
+    db.refresh(proyecto)
+    
+    for t in ["PPT", "PPA", "INFORME"]:
+        doc = DocumentoGeneracion(
+            proyecto_id=proyecto.id,
+            tipo_documento=t,
+            contingut_json="[]",
+            documentos_referencia_json="[]"
+        )
+        db.add(doc)
+    db.commit()
+    return {"id": proyecto.id, "nombre": proyecto.nombre}
+
+@router.get("/proyectos/{proyecto_id}")
+def get_proyecto(proyecto_id: int, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
+    from models import ProyectoGeneracion
+    p = db.query(ProyectoGeneracion).filter(ProyectoGeneracion.id == proyecto_id, ProyectoGeneracion.empleado_id == current_user.id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Proyecto no trobat")
+    
+    docs = {d.tipo_documento: {
+        "id": d.id,
+        "tipo_documento": d.tipo_documento,
+        "contingut_json": d.contingut_json,
+        "documentos_referencia_json": d.documentos_referencia_json
+    } for d in p.documentos}
+    
     return {
-        "id": draft.id,
-        "titol": draft.titol,
-        "contrato_id": draft.contrato_id,
-        "contingut_json": draft.contingut_json
+        "id": p.id,
+        "nombre": p.nombre,
+        "documentos": docs
     }
 
-@router.post("/esborranys")
-def create_draft(payload: DraftSaveRequest, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
-    from models import PPTEsborrany
-    draft = PPTEsborrany(
-        empleado_id=current_user.id,
-        titol=payload.titol,
-        contrato_id=payload.contrato_id,
-        contingut_json=payload.contingut_json
-    )
-    db.add(draft)
+@router.put("/proyectos/{proyecto_id}/documentos/{tipo_documento}")
+def update_documento(proyecto_id: int, tipo_documento: str, payload: DocumentoUpdateRequest, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
+    from models import DocumentoGeneracion, ProyectoGeneracion
+    p = db.query(ProyectoGeneracion).filter(ProyectoGeneracion.id == proyecto_id, ProyectoGeneracion.empleado_id == current_user.id).first()
+    if not p:
+        raise HTTPException(status_code=404, detail="Proyecto no trobat")
+        
+    doc = db.query(DocumentoGeneracion).filter(DocumentoGeneracion.proyecto_id == proyecto_id, DocumentoGeneracion.tipo_documento == tipo_documento).first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Documento no trobat")
+        
+    if payload.contingut_json is not None:
+        doc.contingut_json = payload.contingut_json
+    if payload.documentos_referencia_json is not None:
+        doc.documentos_referencia_json = payload.documentos_referencia_json
+        
+    # Also update modified project date
+    from sqlalchemy.sql import func
+    p.fecha_modificacion = func.now()
+    
     db.commit()
-    db.refresh(draft)
-    return {"id": draft.id, "titol": draft.titol}
+    return {"success": True}
 
-@router.put("/esborranys/{draft_id}")
-def update_draft(draft_id: int, payload: DraftSaveRequest, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
-    from models import PPTEsborrany
-    draft = db.query(PPTEsborrany).filter(PPTEsborrany.id == draft_id, PPTEsborrany.empleado_id == current_user.id).first()
-    if not draft:
-        raise HTTPException(status_code=404, detail="Esborrany no trobat")
-    draft.titol = payload.titol
-    draft.contrato_id = payload.contrato_id
-    draft.contingut_json = payload.contingut_json
-    db.commit()
-    return {"id": draft.id, "titol": draft.titol}
-
-@router.delete("/esborranys/{draft_id}")
-def delete_draft(draft_id: int, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
-    from models import PPTEsborrany
-    draft = db.query(PPTEsborrany).filter(PPTEsborrany.id == draft_id, PPTEsborrany.empleado_id == current_user.id).first()
-    if not draft:
-        raise HTTPException(status_code=404, detail="Esborrany no trobat")
-    db.delete(draft)
+@router.delete("/proyectos/{proyecto_id}")
+def delete_proyecto(proyecto_id: int, db: Session = Depends(get_db), current_user: Any = Depends(get_current_user)):
+    from models import ProyectoGeneracion
+    proyecto = db.query(ProyectoGeneracion).filter(ProyectoGeneracion.id == proyecto_id, ProyectoGeneracion.empleado_id == current_user.id).first()
+    if not proyecto:
+        raise HTTPException(status_code=404, detail="Proyecto no trobat")
+    db.delete(proyecto)
     db.commit()
     return {"success": True}

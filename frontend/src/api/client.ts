@@ -730,30 +730,30 @@ class ApiClient {
         }).then(res => res.content);
     }
 
-    async getPPTDrafts(): Promise<any[]> {
-        return this.request<any[]>('/ppt/esborranys');
+    async getPPTProjects(): Promise<any[]> {
+        return this.request<any[]>('/ppt/proyectos');
     }
 
-    async savePPTDraft(data: { titol: string, contrato_id?: number | null, contingut_json: string }): Promise<any> {
-        return this.request<any>('/ppt/esborranys', {
+    async createPPTProject(data: { nombre: string }): Promise<any> {
+        return this.request<any>('/ppt/proyectos', {
             method: 'POST',
             body: JSON.stringify(data)
         });
     }
 
-    async updatePPTDraft(id: number, data: { titol: string, contrato_id?: number | null, contingut_json: string }): Promise<any> {
-        return this.request<any>(`/ppt/esborranys/${id}`, {
+    async getPPTProject(id: number): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${id}`);
+    }
+
+    async updatePPTDocument(proyecto_id: number, tipo_documento: string, data: { contingut_json?: string, documentos_referencia_json?: string }): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${proyecto_id}/documentos/${tipo_documento}`, {
             method: 'PUT',
             body: JSON.stringify(data)
         });
     }
 
-    async getPPTDraft(id: number): Promise<any> {
-        return this.request<any>(`/ppt/esborranys/${id}`);
-    }
-
-    async deletePPTDraft(id: number): Promise<any> {
-        return this.request<any>(`/ppt/esborranys/${id}`, { method: 'DELETE' });
+    async deletePPTProject(id: number): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${id}`, { method: 'DELETE' });
     }
 
     async getDuplicadosCount(): Promise<{ pendientes: number }> {

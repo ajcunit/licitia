@@ -428,17 +428,34 @@ class AuditLog(Base):
     details = Column(Text)
     success = Column(String(10))
 
-class PPTEsborrany(Base):
-    """Esborranys de PPT/Informes associats a un usuari i opcionalment a un contracte."""
-    __tablename__ = "ppt_esborranys"
+class ProyectoGeneracion(Base):
+    """Projectes per a la generació de documentació."""
+    __tablename__ = "proyectos_generacion"
 
     id = Column(Integer, primary_key=True, index=True)
     empleado_id = Column(Integer, ForeignKey("empleados.id", ondelete="CASCADE"), nullable=False)
-    titol = Column(String(255), nullable=False)
-    contrato_id = Column(Integer, ForeignKey("contratos.id", ondelete="CASCADE"), nullable=True)
-    contingut_json = Column(Text, nullable=False) # JSON array of {title, content, params}
+    nombre = Column(String(255), nullable=False)
     fecha_creacion = Column(DateTime, server_default=func.now())
     fecha_modificacion = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     empleado = relationship("Empleado")
-    contrato = relationship("Contrato")
+    documentos = relationship("DocumentoGeneracion", back_populates="proyecto", cascade="all, delete-orphan")
+
+
+class DocumentoGeneracion(Base):
+    """Documents individuals (PPT, PPA, Informe) dins d'un projecte."""
+    __tablename__ = "documentos_generacion"
+
+    id = Column(Integer, primary_key=True, index=True)
+    proyecto_id = Column(Integer, ForeignKey("proyectos_generacion.id", ondelete="CASCADE"), nullable=False)
+    tipo_documento = Column(String(50), nullable=False) # 'PPT', 'PPA', 'INFORME'
+    contingut_json = Column(Text, nullable=False, default="[]") 
+    documentos_referencia_json = Column(Text, nullable=False, default="[]")
+    fecha_creacion = Column(DateTime, server_default=func.now())
+    fecha_modificacion = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (
+        UniqueConstraint('proyecto_id', 'tipo_documento', name='unique_doc_por_proyecto'),
+    )
+
+    proyecto = relationship("ProyectoGeneracion", back_populates="documentos")
