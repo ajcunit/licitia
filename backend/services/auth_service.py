@@ -91,7 +91,7 @@ class AuthService:
             user = db.query(models.Empleado).filter(models.Empleado.email == email).first()
 
             # Mapeig de grups AD a rols
-            new_rol = "empleado"
+            new_rol = None
             new_dept_id = None
 
             group_mappings_json = ldap_config.get("ldap_group_mappings")
@@ -122,7 +122,7 @@ class AuthService:
                     nombre=entry.displayName.value if hasattr(entry, 'displayName') else username,
                     email=email,
                     activo=True,
-                    rol=new_rol,
+                    rol=new_rol or "empleado",
                 )
                 if new_dept_id:
                     dept = db.query(models.Departamento).filter(models.Departamento.id == new_dept_id).first()
@@ -135,7 +135,8 @@ class AuthService:
             else:
                 if hasattr(entry, 'displayName') and entry.displayName.value:
                     user.nombre = entry.displayName.value
-                user.rol = new_rol
+                if new_rol:
+                    user.rol = new_rol
                 if new_dept_id:
                     dept = db.query(models.Departamento).filter(models.Departamento.id == new_dept_id).first()
                     if dept:
