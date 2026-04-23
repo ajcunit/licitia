@@ -258,7 +258,7 @@ class ContratoListItem(BaseModel):
     data_inici: Optional[date]
     estat_actual: Optional[str]
     estado_interno: str
-    departamento_id: Optional[int]
+    departamentos: List[Departamento] = []
     data_finalitzacio_calculada: Optional[date] = None
     alerta_finalitzacio: Optional[bool] = False
     possiblement_finalitzat: Optional[bool] = False
@@ -289,14 +289,14 @@ class ContratoMenorBase(BaseModel):
 
 class ContratoMenorUpdate(BaseModel):
     codi_expedient: Optional[str] = None
-    departamento_id: Optional[int] = None
+    departamentos_ids: Optional[List[int]] = None
     estado_interno: Optional[str] = None
 
 class ContratoMenor(ContratoMenorBase):
     id: int
-    departamento_id: Optional[int] = None
+    departamentos: List[Departamento] = []
     estado_interno: str = 'normal'
-    fecha_ultima_sincronizacion: Optional[datetime]
+    fecha_ultima_sincronizacion: Optional[datetime] = None
     datos_json_menor: Optional[dict] = None
     datos_json_liquidacio: Optional[dict] = None
 
