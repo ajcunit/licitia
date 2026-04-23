@@ -172,26 +172,24 @@ class ContratoBase(BaseModel):
 
 
 class ContratoCreate(ContratoBase):
-    departamento_id: Optional[int] = None
     estado_interno: str = "normal"
 
 
 class ContratoUpdate(ContratoBase):
     codi_expedient: Optional[str] = None
     estado_interno: Optional[str] = None
-    departamento_id: Optional[int] = None
 
 class ContratoMassAssign(BaseModel):
     contrato_ids: List[int]
-    departamento_id: Optional[int] = None
+    departamentos_ids: Optional[List[int]] = None
 
 class Contrato(ContratoBase):
     id: int
-    departamento_id: Optional[int]
+    departamentos: List[Departamento] = []
     estado_interno: str
-    hash_contenido: Optional[str]
-    fecha_primera_sincronizacion: Optional[datetime]
-    fecha_ultima_sincronizacion: Optional[datetime]
+    hash_contenido: Optional[str] = None
+    fecha_primera_sincronizacion: Optional[datetime] = None
+    fecha_ultima_sincronizacion: Optional[datetime] = None
     fecha_enriquiment: Optional[datetime] = None
 
     class Config:
