@@ -37,26 +37,28 @@ class EmpleadoBase(BaseModel):
     email: str
     rol: str = "empleado"
     permiso_auditoria: Optional[bool] = False
+    permiso_pla_contractacio: Optional[bool] = False
 
 
 class EmpleadoCreate(EmpleadoBase):
-    departamento_id: Optional[int] = None
+    departamentos_ids: List[int] = []
     password: Optional[str] = None
 
 
 class EmpleadoUpdate(BaseModel):
     nombre: Optional[str] = None
     email: Optional[str] = None
-    departamento_id: Optional[int] = None
+    departamentos_ids: Optional[List[int]] = None
     rol: Optional[str] = None
     activo: Optional[bool] = None
     permiso_auditoria: Optional[bool] = None
+    permiso_pla_contractacio: Optional[bool] = None
     password: Optional[str] = None
 
 
 class Empleado(EmpleadoBase):
     id: int
-    departamento_id: Optional[int]
+    departamentos: List[Departamento] = []
     activo: bool
     fecha_creacion: datetime
 
@@ -65,7 +67,7 @@ class Empleado(EmpleadoBase):
 
 
 class EmpleadoConDepartamento(Empleado):
-    departamento: Optional[Departamento] = None
+    pass
 
 
 # Contrato Schemas
