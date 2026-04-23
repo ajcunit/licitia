@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from core.database import SessionLocal
 import models
 import services.alerta_service as alerta_service
+from services.enrichment_service import EnrichmentService
 
 logger = logging.getLogger(__name__)
 
@@ -312,8 +313,9 @@ class SyncService:
             detalles_log = []
             
             for i, record in enumerate(data):
+                prog = 20 + int(70 * (i / max(1, total_records)))
+                
                 if i % 100 == 0:
-                    prog = 20 + int(70 * (i / max(1, total_records)))
                     msg = f"Sincronitzant contractes ({i}/{total_records})..."
                     yield f'data: {json.dumps({"msg": msg, "progress": prog})}\n\n'
                 
@@ -351,12 +353,22 @@ class SyncService:
                         
                         nuevos += 1
                         
+                        # Automatic enrichment for new contracts
+                        if any([contrato.url_json_licitacio, contrato.url_json_avaluacio, 
+                               contrato.url_json_adjudicacio, contrato.url_json_formalitzacio]):
+                            try:
+                                yield f'data: {json.dumps({"msg": f"Enriquint nou contracte {expedient}...", "progress": prog})}\n\n'
+                                EnrichmentService.enrich_contract(db, contrato.id)
+                            except Exception as ee:
+                                logger.warning(f"Error en enriquiment automàtic per {expedient}: {ee}")
+                        
                         if contrato.estado_interno == 'pendiente_aprobacion':
                             msg_d = f"Nou expedient {expedient} descarregat i guardat com a possible duplicat."
                             detalles_log.append({"tipo": "duplicat", "expedient": expedient, "missatge": msg_d})
                             yield f'data: {json.dumps({"msg": f"⚠️ Duplicat: {expedient}", "progress": prog})}\n\n'
                         else:
                             detalles_log.append({"tipo": "nou", "expedient": expedient, "missatge": "Creació de nou expedient completada."})
+                            yield f'data: {json.dumps({"msg": f"✨ Nou contracte: {expedient}", "progress": prog})}\n\n'
                     elif existing.hash_contenido != record_hash:
                         canvis = []
                         for field, value in mapped_data.items():
@@ -369,6 +381,16 @@ class SyncService:
                         existing.hash_contenido = record_hash
                         existing.fecha_ultima_sincronizacion = datetime.now()
                         db.commit()
+
+                        # Re-enrich if updated
+                        if any([existing.url_json_licitacio, existing.url_json_avaluacio, 
+                               existing.url_json_adjudicacio, existing.url_json_formalitzacio]):
+                            try:
+                                yield f'data: {json.dumps({"msg": f"Re-enriquint contracte {expedient}...", "progress": prog})}\n\n'
+                                EnrichmentService.enrich_contract(db, existing.id)
+                            except Exception as ee:
+                                logger.warning(f"Error en enriquiment automàtic per {expedient}: {ee}")
+
                         actualizados += 1
                         
                         msg_u = f"Actualitzat {expedient}"
@@ -484,6 +506,15 @@ class SyncService:
                         
                         db.add(contrato)
                         db.commit()  # Commit immediately
+                        
+                        # Automatic enrichment for new contracts
+                        if any([contrato.url_json_licitacio, contrato.url_json_avaluacio, 
+                               contrato.url_json_adjudicacio, contrato.url_json_formalitzacio]):
+                            try:
+                                EnrichmentService.enrich_contract(db, contrato.id)
+                            except Exception as ee:
+                                logger.warning(f"Error en enriquiment automàtic per {expedient}: {ee}")
+                                
                         nuevos += 1
                     elif existing.hash_contenido != record_hash:
                         # Update existing - skip historial for performance
@@ -491,6 +522,15 @@ class SyncService:
                             setattr(existing, field, value)
                         existing.fecha_ultima_sincronizacion = datetime.now()
                         db.commit()  # Commit immediately
+                        
+                        # Re-enrich if updated
+                        if any([existing.url_json_licitacio, existing.url_json_avaluacio, 
+                               existing.url_json_adjudicacio, existing.url_json_formalitzacio]):
+                            try:
+                                EnrichmentService.enrich_contract(db, existing.id)
+                            except Exception as ee:
+                                logger.warning(f"Error en enriquiment automàtic per {expedient}: {ee}")
+                                
                         actualizados += 1
                     else:
                         sin_cambios += 1
@@ -627,12 +667,21 @@ class SyncService:
                                     
                                 # Update contract's calculated end date
                                 if d_fi:
-                                    cf = contrato.data_final
+                                    cf = contrato.data_fi_execucio or contrato.data_final
                                     if cf and hasattr(cf, 'date'): cf = cf.date()
+                                    
+                                    # Si la prorroga estén el contracte, actualitzem les dates i alertes
                                     if cf is None or d_fi > cf:
                                         contrato.data_final = d_fi
+                                        contrato.data_fi_execucio = d_fi
                                         contrato.data_finalitzacio_calculada = d_fi
-
+                                        
+                                        # Recalcular alertes
+                                        today = date_type.today()
+                                        six_months_later = today + relativedelta(months=6)
+                                        
+                                        contrato.possiblement_finalitzat = d_fi < today
+                                        contrato.alerta_finalitzacio = today <= d_fi <= six_months_later
                             elif "modificaci" in situacio:
                                 num_mod = SyncService.parse_int(record.get("numero_modificacio"))
                                 if num_mod is None: continue
@@ -810,4 +859,123 @@ class SyncService:
             stats["errors"].append(f"Error general sincronitzant menors: {str(e)}")
             
         return stats
+
+    @staticmethod
+    def sync_menores_stream(db: Session, codi_ine10: str):
+        """Sync minor contracts (menors) and their liquidations using SSE"""
+        import json
+        try:
+            api_url = SyncService.get_config_val(db, "prorrogues_api_url", SyncService.DEFAULT_PRORROGUES_API_URL)
+            where_clause = f"id_organisme_contractant='{codi_ine10}' AND procediment_adjudicacio='Menor'"
+            url = f"{api_url}?$where={where_clause}&$limit=50000"
+            
+            yield f'data: {json.dumps({"msg": "Connectant amb API de Contractes Menors...", "progress": 5})}\n\n'
+            response = httpx.get(url, timeout=120.0)
+            response.raise_for_status()
+            records = response.json()
+            
+            if not records:
+                yield f'data: {json.dumps({"msg": "No hi ha contractes menors per aquest organisme.", "progress": 100, "done": True, "nous": 0, "actualitzats": 0})}\n\n'
+                return
+                
+            yield f'data: {json.dumps({"msg": f"Descarregats {len(records)} registres. Agrupant...", "progress": 15})}\n\n'
+            
+            aliases = {a.nombre_original: a.nombre_canonico for a in db.query(models.AliasAdjudicatario).all()}
+            
+            grouped = {}
+            for r in records:
+                exp = r.get("codi_expedient")
+                if not exp: continue
+                if exp not in grouped:
+                    grouped[exp] = {"menor": None, "liquidacio": None}
+                
+                sit = r.get("situaci_contractual", "").lower()
+                if sit == "menor":
+                    grouped[exp]["menor"] = r
+                elif "liquidaci" in sit:
+                    grouped[exp]["liquidacio"] = r
+            
+            total_exps = len(grouped)
+            yield f'data: {json.dumps({"msg": f"Trobats {total_exps} expedients. Processant...", "progress": 20})}\n\n'
+            
+            menors_nous = 0
+            menors_actualitzats = 0
+            
+            for i, (exp, data) in enumerate(grouped.items()):
+                try:
+                    menor_record = data["menor"]
+                    liq_record = data["liquidacio"]
+                    
+                    base_record = menor_record or liq_record
+                    if not base_record:
+                        continue
+                        
+                    existing = db.query(models.ContratoMenor).filter(models.ContratoMenor.codi_expedient == exp).first()
+                    
+                    update_data = {
+                        "fecha_ultima_sincronizacion": datetime.now()
+                    }
+                    
+                    if menor_record:
+                        adj_nom = menor_record.get("adjudicatari")
+                        if aliases and adj_nom in aliases:
+                            adj_nom = aliases[adj_nom]
+                            
+                        d_adj = SyncService.parse_date(menor_record.get("data_adjudicacio"))
+                        if d_adj and hasattr(d_adj, 'date'): d_adj = d_adj.date()
+                        
+                        update_data.update({
+                            "tipus_contracte": menor_record.get("tipus_contracte"),
+                            "descripcio_expedient": menor_record.get("descripcio_expedient"),
+                            "adjudicatari": adj_nom,
+                            "import_adjudicacio": SyncService.parse_float(menor_record.get("import_adjudicacio")),
+                            "data_adjudicacio": d_adj,
+                            "exercici": SyncService.parse_int(menor_record.get("exercici")),
+                            "dies_durada": SyncService.parse_int(menor_record.get("dies_durada")),
+                            "mesos_durada": SyncService.parse_int(menor_record.get("mesos_durada")),
+                            "anys_durada": SyncService.parse_int(menor_record.get("anys_durada")),
+                            "datos_json_menor": menor_record
+                        })
+                        
+                    if liq_record:
+                        d_liq = SyncService.parse_date(liq_record.get("data_liquidacio"))
+                        if d_liq and hasattr(d_liq, 'date'): d_liq = d_liq.date()
+                        
+                        update_data.update({
+                            "tipus_liquidacio": liq_record.get("tipus_liquidacio"),
+                            "data_liquidacio": d_liq,
+                            "import_liquidacio": SyncService.parse_float(liq_record.get("import_liquidacio")),
+                            "datos_json_liquidacio": liq_record
+                        })
+                        
+                        if not menor_record:
+                            if not update_data.get("descripcio_expedient"): update_data["descripcio_expedient"] = liq_record.get("descripcio_expedient")
+                            if not update_data.get("adjudicatari"): update_data["adjudicatari"] = liq_record.get("adjudicatari")
+                            if not update_data.get("tipus_contracte"): update_data["tipus_contracte"] = liq_record.get("tipus_contracte")
+
+                    if existing:
+                        for k, v in update_data.items():
+                            setattr(existing, k, v)
+                        menors_actualitzats += 1
+                    else:
+                        update_data["codi_expedient"] = exp
+                        nou = models.ContratoMenor(**update_data)
+                        db.add(nou)
+                        menors_nous += 1
+                    
+                    if i % 50 == 0:
+                        prog = 20 + int(75 * (i / max(1, total_exps)))
+                        yield f'data: {json.dumps({"msg": f"Processant contracte menor {exp}...", "progress": prog})}\n\n'
+                        db.commit()
+                        
+                except Exception as e:
+                    db.rollback()
+                    logger.warning(f"Error parsejant menor {exp}: {str(e)}")
+            
+            db.commit()
+            yield f'data: {json.dumps({"msg": "Sincronització de menors completada!", "progress": 100, "done": True, "nous": menors_nous, "actualitzats": menors_actualitzats})}\n\n'
+                    
+        except Exception as e:
+            db.rollback()
+            yield f'data: {json.dumps({"msg": f"Error general sincronitzant menors: {str(e)}", "progress": 100, "error": True})}\n\n'
 

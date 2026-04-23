@@ -23,7 +23,7 @@ import models
 from routers import (
     departamentos, empleados, contratos, sincronizacion,
     cpv, config, superbuscador, contratos_menores, favoritos,
-    auth, adjudicatarios, auditoria, setup, pla_contractacio,
+    auth, adjudicatarios, auditoria, setup, pla_contractacio, ppt,
 )
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,15 @@ for i in range(15):
     try:
         Base.metadata.create_all(bind=engine)
         print("INFO:    Database tables synchronized")
-        # NO es crea cap admin automàticament — el wizard s'encarrega
+        
+        # Auto-run structural migrations to ensure new columns are added in production
+        try:
+            from scripts.migrate_enrichment import run_migration
+            print("INFO:    Running schema migrations...")
+            run_migration()
+        except Exception as mig_e:
+            print(f"WARNING: Schema migration failed: {mig_e}")
+            
         break
     except Exception as e:
         if i == 14:
@@ -124,6 +132,9 @@ api_app.include_router(auth.router)
 
 # SSE stream (auth via query param)
 api_app.include_router(sincronizacion.router_public)
+api_app.include_router(contratos.router_public)
+api_app.include_router(cpv.router_public)
+api_app.include_router(contratos_menores.router_public)
 
 # Endpoints protegits
 secure_deps = [Depends(get_current_user)]
@@ -139,6 +150,8 @@ api_app.include_router(favoritos.router, dependencies=secure_deps)
 api_app.include_router(adjudicatarios.router)
 api_app.include_router(auditoria.router, dependencies=secure_deps)
 api_app.include_router(pla_contractacio.router, dependencies=secure_deps)
+api_app.include_router(ppt.router, dependencies=secure_deps)
+
 @api_app.exception_handler(RequestValidationError)
 async def api_validation_exception_handler(request, exc):
     print(f"DEBUG API: 422 Error at {request.url.path}")

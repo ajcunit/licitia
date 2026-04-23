@@ -1,0 +1,306 @@
+{
+  "versio" : "1.0.0",
+  "codiExpedient" : "2525/2025",
+  "idExpedient" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+  "dataPublicacioPlanificada" : "2025-05-21T12:20:00.181Z",
+  "organ" : {
+    "nom" : "Ajuntament de Cunit",
+    "nif" : "P4305200J",
+    "direccioPostal" : "C/ Major, 12",
+    "localitat" : "Altres/Diversos, No Consta",
+    "codiPostal" : "99999",
+    "nuts" : "OT",
+    "web" : "www.cunit.cat",
+    "telefon" : "977674080",
+    "fax" : "977674148",
+    "email" : "secretaria@cunit.cat",
+    "personesContacte" : [ {
+      "nom" : "Matilde",
+      "cognom" : "Garcia Gimenez",
+      "carrec" : "Cap de Secció",
+      "telefon" : "977674080",
+      "email" : "secretaria@cunit.cat"
+    } ],
+    "centralCompres" : false,
+    "observacions" : { },
+    "horari" : {
+      "ca" : "De dilluns a divendres, de 9:00 a 13:30 hores"
+    },
+    "organContractacioId" : 12628431
+  },
+  "publicacio" : {
+    "fase" : {
+      "id" : 1008286,
+      "ca" : "Expedient en avaluació",
+      "es" : "Expediente en avaluación",
+      "en" : "Under evaluation",
+      "oc" : "En avaloracion"
+    },
+    "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+    "teLots" : false,
+    "dadesBasiquesPublicacio" : {
+      "fasePublicacio" : {
+        "id" : 1008286,
+        "ca" : "Expedient en avaluació",
+        "es" : "Expediente en avaluación",
+        "en" : "Under evaluation",
+        "oc" : "En avaloracion"
+      },
+      "normativaAplicable" : {
+        "id" : 1008186,
+        "ca" : "LCSP (contractes del sector públic)",
+        "en" : "LCSP (public sector contracts)",
+        "oc" : "LCSP (contractes deth sector public)"
+      },
+      "codiExpedient" : "2525/2025",
+      "denominacio" : {
+        "ca" : "contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "descripcio" : {
+        "ca" : "Contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "observacions" : { },
+      "tipusPublicacioExpedient" : {
+        "id" : 1000000,
+        "ca" : "Contracte",
+        "en" : "Contract",
+        "oc" : "Contracte"
+      },
+      "tipusTramitacio" : {
+        "id" : 470,
+        "ca" : "Ordinària",
+        "es" : "Ordinaria",
+        "en" : "Ordinary",
+        "oc" : "Ordinària"
+      },
+      "tipusContracte" : {
+        "id" : 393,
+        "ca" : "Serveis",
+        "es" : "Servicios",
+        "en" : "Services",
+        "oc" : "Servicis"
+      },
+      "procedimentAdjudicacio" : {
+        "id" : 421,
+        "ca" : "Negociat sense publicitat",
+        "es" : "Negociado sin publicidad",
+        "en" : "Traded without advertising",
+        "oc" : "Negociat sense publicitat"
+      },
+      "publicacioAgregada" : false,
+      "accesExclusiu" : false,
+      "tipusOfertaElectronica" : {
+        "id" : 413,
+        "ca" : "Sobre digital",
+        "es" : "Sobre digital",
+        "en" : "Digital envelope",
+        "oc" : "Envolopa digitau"
+      },
+      "descripcioAltres" : { },
+      "compraPublicaInnovacio" : false,
+      "compraPublicaPrecomercial" : false,
+      "contracteMixt" : false,
+      "justificacioTramitacioUrgencia" : { },
+      "denominacioExpedientReferencia" : { }
+    },
+    "dadesPublicacio" : {
+      "observacions" : { },
+      "membresMesa" : [ {
+        "nom" : "Javier",
+        "cognoms" : "Lorenzo Torres",
+        "carrec" : {
+          "id" : 487,
+          "ca" : "President/a"
+        }
+      }, {
+        "nom" : "Matilde",
+        "cognoms" : "García Gimenez",
+        "carrec" : {
+          "id" : 488,
+          "ca" : "Secretari/ària"
+        }
+      }, {
+        "nom" : "Javier",
+        "cognoms" : "Requejo Garcia",
+        "carrec" : {
+          "id" : 489,
+          "ca" : "Vocal en representació d'Intervenció / Control Intern",
+          "en" : "Board member representing Supervision / Internal Control",
+          "oc" : "Vocau en representacion d'Intervencion / Contraròtle Intèrne"
+        }
+      }, {
+        "nom" : "Anna",
+        "cognoms" : "Aviño Algarte",
+        "carrec" : {
+          "id" : 491,
+          "ca" : "Vocal",
+          "en" : "Board member",
+          "oc" : "Vocau"
+        }
+      }, {
+        "nom" : "Ana Isabel",
+        "cognoms" : "Lafuente Garcia",
+        "carrec" : {
+          "id" : 490,
+          "ca" : "Vocal en representació d'Assessoria Jurídica",
+          "en" : "Board member representing Legal Advice",
+          "oc" : "Vocau en representacion d'Assessoria Juridica"
+        }
+      } ]
+    },
+    "dadesPublicacioLot" : [ {
+      "pressupostLicitacio" : 80100,
+      "publicacioExpedientId" : 300456880,
+      "identitatEmpresa" : [ {
+        "empresa" : "XARXES DE TELECOMUNICACIONS ALTERNATIVES, SL",
+        "tipusIdentificador" : {
+          "id" : 542,
+          "ca" : "NIF",
+          "en" : "NIF (Tax Identification Number)",
+          "oc" : "NIF"
+        },
+        "identificadorEmpresa" : "B65892200",
+        "tipusEmpresa" : {
+          "id" : 748,
+          "ca" : "PIME",
+          "en" : "SME",
+          "oc" : "PIME"
+        },
+        "pais" : {
+          "id" : 65,
+          "ca" : "Espanya",
+          "es" : "España",
+          "en" : "Spain"
+        },
+        "provincia" : {
+          "id" : 303,
+          "ca" : "Barcelona",
+          "es" : "Barcelona"
+        },
+        "municipi" : {
+          "id" : 1003315,
+          "ca" : "Granada, la"
+        },
+        "noOberta" : false,
+        "tercerSector" : {
+          "id" : 1008406,
+          "ca" : "No tercer sector"
+        },
+        "informacioUte" : [ ],
+        "observacions" : { }
+      } ],
+      "informesActesMesesContractacio" : {
+        "tipusAnotacioFitxer" : {
+          "id" : 1000036,
+          "ca" : "Fitxer",
+          "es" : "Fichero",
+          "en" : "File",
+          "oc" : "Fichèr"
+        },
+        "anotacio" : { },
+        "fitxers" : {
+          "ca" : [ {
+            "id" : 301317251,
+            "titol" : "Acta sobre únic.pdf",
+            "path" : "TCjaH1V0ir2IHIVVH4j8qPLoR1R1WJ-TROsvDU9x9JdEmP5p6wzBVxNt5OiHwnBf7dQrRKCrWVMjixEpcHGYTi2cuTqZk5GEcJwmVlXEc_Mwm2s-LuX4C35dii10xQoioAHZAyQMJxnI53UEiww4q46dpLZ0L-8Cjk0o59zoqEkVSADLA88sMFuINqYzi_3UiappX_1Pwk_Hq1yjjaQKnz3qvIyb2xV7gWhtIYzbKyFy7Ml_YQqU4lEdpNA_VUUKuzsoRSz5l2IJGrtJEoPji2764INYuKL2-8RYWLqpzwavCr2_qkOvz1987YpY4adyFH02lAGryO4sTjQubZmL7w==",
+            "hash" : "EC260D08F459177A753E704A56E1F0CB",
+            "idioma" : "ca",
+            "mida" : 104421
+          } ],
+          "es" : [ ],
+          "en" : [ ],
+          "oc" : [ ]
+        }
+      },
+      "informesOfertesPresumpcioAnormalitat" : {
+        "tipusAnotacioFitxer" : {
+          "id" : 1000036,
+          "ca" : "Fitxer",
+          "es" : "Fichero",
+          "en" : "File",
+          "oc" : "Fichèr"
+        },
+        "anotacio" : { },
+        "fitxers" : {
+          "ca" : [ ],
+          "es" : [ ],
+          "en" : [ ],
+          "oc" : [ ]
+        }
+      },
+      "informesValoracio" : {
+        "tipusAnotacioFitxer" : {
+          "id" : 1000036,
+          "ca" : "Fitxer",
+          "es" : "Fichero",
+          "en" : "File",
+          "oc" : "Fichèr"
+        },
+        "anotacio" : { },
+        "fitxers" : {
+          "ca" : [ ],
+          "es" : [ ],
+          "en" : [ ],
+          "oc" : [ ]
+        }
+      },
+      "altraDocumentacio" : {
+        "ca" : [ ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "observacions" : { },
+      "totalOfertesRebudes" : 1
+    } ],
+    "dadesExpedient" : {
+      "organContractacioId" : 12628431,
+      "idiomaPerDefecte" : {
+        "id" : 1000031,
+        "ca" : "Català",
+        "es" : "Catalan",
+        "en" : "Catalan",
+        "oc" : "Catalan"
+      },
+      "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+      "lleiAssociada" : "Llei 2017/2019",
+      "noAdmetrePreguntes" : false,
+      "esPublicacioAntiga" : false,
+      "tipusOfertaElectronica" : 413,
+      "denominacioExpedientReferencia" : { }
+    },
+    "motiuEsmena" : { }
+  },
+  "pathPdf" : "ExoKbLHjOnSLyId6SylN-4839SmtbZerJ2Gg2Hu7xXo1Jh_tlJs2U0OjZtuJe5ifA4ykoxOwXVv61f9EGMsNLS4ZKtdpcfuYnHyEr4dxBWlAaFR2x0DT4c4wwsfbYiTqCt5_uP-ywFa3tRpkBdPorPSrB3CBfUI_eNr3qhk-4slKkdnX-57CngJa3A2DwbdntDWDqWlIaNHMYb8vj198aCd14weVFkl1tjIoa8_AAGSSg6w1BEpjQatPY7GLb2n9107zOP7SBy5EFSSNNFvsLpr929LNqrQbljCrSoMGEK6l_9bQeuPUjB6OizvjWTDIWwvZO2THnGck4tRZrmZtQA==",
+  "pathCertificacio" : "do4N1JZfRs12X7SesTr5Tm32ddW63_XUhcRy_DBGOkj4JuG8kfIeDhlIRCZNZf_FwBICYainHz6xVfJMJGbJU4WPTD-_DTb3SXIpMZ5z3DZedAGiRPBQKPUew5dHE13axml2s4fEFSbAHAUufFlPJu75kZBaYKkRq_0hz-9A11vyh9SCbMAzY6P8q1rIlMHWvqSGnPGqoHyHebKYwEUnTpcewThOWlGTK_oHSUhrvT1ummUQFVq8tIvJTYvj9D1PJEzeECrNZIxkOoQOmPR-IlJRnJRHvAjSbyaW6YGqkKgUNX_X5GJ0mV96D3Uvvi_aYdUQZc_wZdA-GeqldWg-Gg==",
+  "pathJson" : "TAehYqbncsuf7dHacHiX-5uB-pl6yHJ7semU-mWr2E2635RKynywad4ifKU4S9f3w5LzpuFguh44Pq6zmAVQQRYBRxNuBLl3uVsXR5-knU2LUIwj1UouDvFWbWJ6Y02T5jtesv9w8E2Vpy4Dm84Hha6PTMUFwPWr8C9GFq062Yf_Bs9z4p9Y3Yhzhun7SzZHwNDItM6DIFumiMh5NZLopj7Zt_y79K_4rKZ6IYP6xrZpLKg9mI9wXf2FoVT6yyUVp8JgFDtlB3UP_Wu8aRldcSAFbiNEtDCN0AfUSEEyjz1J9sMepgKMGdSwBmZgpvYwHjJqsR5LQ6O3uTVYV9FDHg==",
+  "dataPublicacioReal" : "2025-05-21T12:24:06.384Z",
+  "dadesExpedient" : {
+    "organContractacioId" : 12628431,
+    "idiomaPerDefecte" : {
+      "id" : 1000031,
+      "ca" : null,
+      "es" : null,
+      "en" : null,
+      "oc" : null
+    },
+    "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+    "dataFiPublicacioPerfil" : null,
+    "dataFiGestio" : null,
+    "lleiAssociada" : "Llei 2017/2019",
+    "noAdmetrePreguntes" : false,
+    "tenderingSpaceId" : null,
+    "esPublicacioAntiga" : false,
+    "tipusOfertaElectronica" : 413,
+    "dataVisiblePortalAccesExclusiu" : null,
+    "expedientIdReferencia" : null,
+    "codiExpedientReferencia" : null,
+    "denominacioExpedientReferencia" : {
+      "ca" : null,
+      "es" : null,
+      "en" : null,
+      "oc" : null
+    },
+    "nomOrganContractacioReferencia" : null
+  }
+}

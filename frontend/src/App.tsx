@@ -27,8 +27,12 @@ import SetupWizard from './pages/SetupWizard';
 import ProtectedRoute from './components/ProtectedRoute';
 import PlaContractacio from './pages/PlaContractacio';
 
+import GeneradorPPT from './pages/GeneradorPPT';
+import { PPTProvider } from './context/PPTContext';
+
 function App() {
     return (
+        <PPTProvider>
         <BrowserRouter>
             <SetupGuard>
                 <Routes>
@@ -60,11 +64,13 @@ function App() {
                             <Route path="credits" element={<Credits />} />
                             <Route path="contratos-menores" element={<ContratosMenores />} />
                             <Route path="contratos-menores/:id" element={<ContratoMenorDetalle />} />
+                            <Route path="generador-ppt" element={<GeneradorPPT />} />
                         </Route>
                     </Route>
                 </Routes>
             </SetupGuard>
         </BrowserRouter>
+        </PPTProvider>
     );
 }
 

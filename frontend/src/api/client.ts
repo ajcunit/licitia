@@ -107,6 +107,78 @@ export interface Contrato {
     url_json_anulacio?: string;
     meses_aviso_vencimiento?: number;
     responsables?: Empleado[];
+    
+    // Enrichment fields
+    normativa_aplicable?: string;
+    tipus_publicacio_expedient?: string;
+    procediment_adjudicacio?: string;
+    acces_exclusiu?: boolean;
+    tipus_oferta_electronica?: string;
+    compra_publica_innovacio?: boolean;
+    contracte_mixt?: boolean;
+    te_lots?: boolean;
+    contracte_harmonitzat?: boolean;
+    data_termini_presentacio?: string;
+    preveuen_modificacions?: boolean;
+    preveuen_prorrogues?: boolean;
+    causa_habilitant?: string;
+    divisio_lots?: string;
+    garantia_provisional?: boolean;
+    garantia_definitiva?: boolean;
+    percentatge_garantia_definitiva?: number;
+    reserva_social?: boolean;
+    import_adjudicacio_sense_iva?: number;
+    iva_percentatge?: number;
+    valor_estimat_contracte?: number;
+    revisio_preus?: string;
+    total_ofertes_rebudes?: number;
+    durada_anys?: number;
+    durada_mesos?: number;
+    durada_dies?: number;
+    data_inici_execucio?: string;
+    data_fi_execucio?: string;
+    adjudicatari_tipus_empresa?: string;
+    adjudicatari_tercer_sector?: string;
+    adjudicatari_telefon?: string;
+    adjudicatari_email?: string;
+    subcontractacio_permesa?: boolean;
+    peu_recurs?: string;
+    fecha_enriquiment?: string;
+    // Relations
+    criteris_adjudicacio?: CriteriAdjudicacio[];
+    membres_mesa?: MembreMesa[];
+    documents_fase?: DocumentFase[];
+    prorrogues?: Prorroga[];
+    modificacions?: Modificacion[];
+}
+
+export interface CriteriAdjudicacio {
+    id: number;
+    contrato_id: number;
+    index: number;
+    criteri_nom?: string;
+    ponderacio?: number;
+    desglossament_json?: any[];
+}
+
+export interface MembreMesa {
+    id: number;
+    contrato_id: number;
+    nom?: string;
+    cognoms?: string;
+    carrec?: string;
+}
+
+export interface DocumentFase {
+    id: number;
+    contrato_id: number;
+    fase: string;
+    tipus_document?: string;
+    titol?: string;
+    document_id?: number;
+    hash_document?: string;
+    mida?: number;
+    url_descarrega?: string;
 }
 
 export interface Sincronizacion {
@@ -610,6 +682,12 @@ class ApiClient {
         return this.request<Modificacion[]>(`/contratos/${contratoId}/modificacions`);
     }
 
+    async enrichContrato(contratoId: number): Promise<{ message: string; stats: any }> {
+        return this.request<{ message: string; stats: any }>(`/contratos/${contratoId}/enrich`, {
+            method: 'POST',
+        });
+    }
+
     // Contratos Menores
     async getContratosMenores(params?: { skip?: number, limit?: number, search?: string, adjudicatari?: string, exercici?: number, recent?: boolean, departamento_id?: number, estado_interno?: string, sense_departament?: boolean }): Promise<ContratoMenor[]> {
         const query = new URLSearchParams();
@@ -730,6 +808,110 @@ class ApiClient {
         return source;
     }
 
+    startEnrichBatchStream(
+        onMessage: (msg: string, progress: number) => void,
+        onError: (err: any) => void,
+        onComplete: () => void,
+        force: boolean = false
+    ): EventSource {
+        const { access } = getTokens();
+        const source = new EventSource(`${this.baseUrl}/contratos/enrich/stream?force=${force}&token=${encodeURIComponent(access || '')}`);
+        
+        source.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.error) {
+                    onError(new Error(data.msg));
+                    source.close();
+                } else if (data.done) {
+                    onMessage(data.msg, data.progress);
+                    onComplete();
+                    source.close();
+                } else {
+                    onMessage(data.msg, data.progress);
+                }
+            } catch (err) {
+                console.error("Failed to parse SSE", err);
+            }
+        };
+
+        source.onerror = (err) => {
+            onError(err);
+            source.close();
+        };
+
+        return source;
+    }
+
+    startCpvsSyncStream(
+        onMessage: (msg: string, progress: number) => void,
+        onError: (err: any) => void,
+        onComplete: (stats: any) => void
+    ): EventSource {
+        const { access } = getTokens();
+        const source = new EventSource(`${this.baseUrl}/cpv/sync/stream?token=${encodeURIComponent(access || '')}`);
+        
+        source.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.error) {
+                    onError(new Error(data.msg));
+                    source.close();
+                } else if (data.done) {
+                    onMessage(data.msg, data.progress);
+                    onComplete({ nuevos: data.nuevos, actualizados: data.actualizados });
+                    source.close();
+                } else {
+                    onMessage(data.msg, data.progress);
+                }
+            } catch (err) {
+                console.error("Failed to parse SSE", err);
+            }
+        };
+
+        source.onerror = (err) => {
+            onError(err);
+            source.close();
+        };
+
+        return source;
+    }
+
+    startMenoresSyncStream(
+        codi_ine10: string,
+        onMessage: (msg: string, progress: number) => void,
+        onError: (err: any) => void,
+        onComplete: (stats: any) => void
+    ): EventSource {
+        const { access } = getTokens();
+        const source = new EventSource(`${this.baseUrl}/contratos-menores/sincronizar/stream?codi_ine10=${codi_ine10}&token=${encodeURIComponent(access || '')}`);
+        
+        source.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.error) {
+                    onError(new Error(data.msg));
+                    source.close();
+                } else if (data.done) {
+                    onMessage(data.msg, data.progress);
+                    onComplete({ nous: data.nous, actualitzats: data.actualitzats });
+                    source.close();
+                } else {
+                    onMessage(data.msg, data.progress);
+                }
+            } catch (err) {
+                console.error("Failed to parse SSE", err);
+            }
+        };
+
+        source.onerror = (err) => {
+            onError(err);
+            source.close();
+        };
+
+        return source;
+    }
+
     async getProxyJson(url: string): Promise<any> {
         return this.request<any>(`/proxy-json?url=${encodeURIComponent(url)}`);
     }
@@ -742,6 +924,47 @@ class ApiClient {
     async getDuplicados(estado?: string): Promise<Duplicado[]> {
         const params = estado ? `?estado=${estado}` : '';
         return this.request<Duplicado[]>(`/sincronizacion/duplicados/${params}`);
+    }
+
+    // PPT Generator
+    async generatePPTIndex(urls: string[]): Promise<any[]> {
+        return this.request<{ success: boolean, index: any[] }>('/ppt/generate-index', {
+            method: 'POST',
+            body: JSON.stringify({ urls })
+        }).then(res => res.index);
+    }
+
+    async generatePPTSection(title: string, instructions: string, urls: string[]): Promise<string> {
+        return this.request<{ success: boolean, content: string }>('/ppt/generate-section', {
+            method: 'POST',
+            body: JSON.stringify({ title, instructions, urls })
+        }).then(res => res.content);
+    }
+
+    async getPPTProjects(): Promise<any[]> {
+        return this.request<any[]>('/ppt/proyectos');
+    }
+
+    async createPPTProject(data: { nombre: string }): Promise<any> {
+        return this.request<any>('/ppt/proyectos', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async getPPTProject(id: number): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${id}`);
+    }
+
+    async updatePPTDocument(proyecto_id: number, tipo_documento: string, data: { contingut_json?: string, documentos_referencia_json?: string }): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${proyecto_id}/documentos/${tipo_documento}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async deletePPTProject(id: number): Promise<any> {
+        return this.request<any>(`/ppt/proyectos/${id}`, { method: 'DELETE' });
     }
 
     async getDuplicadosCount(): Promise<{ pendientes: number }> {

@@ -423,7 +423,7 @@ export default function ConfiguracionPage() {
                                             className="input input-sm input-bordered w-full"
                                             value={configs.ollama_url}
                                             onChange={(e) => handleChange('ollama_url', e.target.value)}
-                                            placeholder="http://localhost:11434"
+                                            placeholder="http://host.docker.internal:11434"
                                         />
                                     </div>
                                     <div className="space-y-1">

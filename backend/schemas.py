@@ -10,10 +10,6 @@ class DepartamentoBase(BaseModel):
     nombre: str
     descripcion: Optional[str] = None
 
-    model_config = {
-        "from_attributes": True
-    }
-
 
 class DepartamentoCreate(DepartamentoBase):
     pass
@@ -31,6 +27,9 @@ class Departamento(DepartamentoBase):
     activo: bool
     fecha_creacion: datetime
 
+    class Config:
+        from_attributes = True
+
 
 # Empleado Schemas
 class EmpleadoBase(BaseModel):
@@ -38,38 +37,35 @@ class EmpleadoBase(BaseModel):
     email: str
     rol: str = "empleado"
     permiso_auditoria: Optional[bool] = False
-    permiso_pla_contractacio: Optional[bool] = False
-
-    model_config = {
-        "from_attributes": True
-    }
 
 
 class EmpleadoCreate(EmpleadoBase):
-    departamentos_ids: Optional[List[int]] = []
+    departamento_id: Optional[int] = None
     password: Optional[str] = None
 
 
 class EmpleadoUpdate(BaseModel):
     nombre: Optional[str] = None
     email: Optional[str] = None
-    departamentos_ids: Optional[List[int]] = None
+    departamento_id: Optional[int] = None
     rol: Optional[str] = None
     activo: Optional[bool] = None
     permiso_auditoria: Optional[bool] = None
-    permiso_pla_contractacio: Optional[bool] = None
     password: Optional[str] = None
 
 
 class Empleado(EmpleadoBase):
     id: int
-    departamentos: List[Departamento] = []
+    departamento_id: Optional[int]
     activo: bool
     fecha_creacion: datetime
 
+    class Config:
+        from_attributes = True
+
 
 class EmpleadoConDepartamento(Empleado):
-    departamentos: List[Departamento] = []
+    departamento: Optional[Departamento] = None
 
 
 # Contrato Schemas
@@ -130,37 +126,121 @@ class ContratoBase(BaseModel):
     url_json_anulacio: Optional[str] = None
     data_finalitzacio_calculada: Optional[date] = None
     alerta_finalitzacio: Optional[bool] = False
+    
+    # Camps enriquits
+    normativa_aplicable: Optional[str] = None
+    tipus_publicacio_expedient: Optional[str] = None
+    procediment_adjudicacio: Optional[str] = None
+    acces_exclusiu: Optional[bool] = None
+    tipus_oferta_electronica: Optional[str] = None
+    compra_publica_innovacio: Optional[bool] = None
+    contracte_mixt: Optional[bool] = None
+    te_lots: Optional[bool] = None
+    contracte_harmonitzat: Optional[bool] = None
+    data_termini_presentacio: Optional[datetime] = None
+    preveuen_modificacions: Optional[bool] = None
+    preveuen_prorrogues: Optional[bool] = None
+    causa_habilitant: Optional[str] = None
+    divisio_lots: Optional[str] = None
+    garantia_provisional: Optional[bool] = None
+    garantia_definitiva: Optional[bool] = None
+    percentatge_garantia_definitiva: Optional[float] = None
+    reserva_social: Optional[bool] = None
+    import_adjudicacio_sense_iva: Optional[float] = None
+    iva_percentatge: Optional[float] = None
+    valor_estimat_contracte: Optional[float] = None
+    revisio_preus: Optional[str] = None
+    total_ofertes_rebudes: Optional[int] = None
+    durada_anys: Optional[int] = None
+    durada_mesos: Optional[int] = None
+    durada_dies: Optional[int] = None
+    data_inici_execucio: Optional[date] = None
+    data_fi_execucio: Optional[date] = None
+    adjudicatari_tipus_empresa: Optional[str] = None
+    adjudicatari_tercer_sector: Optional[str] = None
+    adjudicatari_telefon: Optional[str] = None
+    adjudicatari_email: Optional[str] = None
+    subcontractacio_permesa: Optional[bool] = None
+    peu_recurs: Optional[str] = None
     possiblement_finalitzat: Optional[bool] = False
-    meses_aviso_vencimiento: Optional[int] = None
 
 
 class ContratoCreate(ContratoBase):
-    departamentos_ids: Optional[List[int]] = []
+    departamento_id: Optional[int] = None
     estado_interno: str = "normal"
 
 
 class ContratoUpdate(ContratoBase):
     codi_expedient: Optional[str] = None
     estado_interno: Optional[str] = None
-    departamentos_ids: Optional[List[int]] = None
-    responsables_ids: Optional[List[int]] = None
+    departamento_id: Optional[int] = None
 
 class ContratoMassAssign(BaseModel):
     contrato_ids: List[int]
-    departamentos_ids: Optional[List[int]] = None
+    departamento_id: Optional[int] = None
 
 class Contrato(ContratoBase):
     id: int
-    departamentos: List[Departamento] = []
+    departamento_id: Optional[int]
     estado_interno: str
     hash_contenido: Optional[str]
     fecha_primera_sincronizacion: Optional[datetime]
     fecha_ultima_sincronizacion: Optional[datetime]
-    responsables: Optional[List[Empleado]] = []
+    fecha_enriquiment: Optional[datetime] = None
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
+
+
+# Schemas per entitats enriquides
+class CriteriAdjudicacioSchema(BaseModel):
+    id: int
+    contrato_id: int
+    index: int = 0
+    criteri_nom: Optional[str] = None
+    ponderacio: Optional[float] = None
+    desglossament_json: Optional[list] = None
+
+    class Config:
+        from_attributes = True
+
+
+class MembreMesaSchema(BaseModel):
+    id: int
+    contrato_id: int
+    nom: Optional[str] = None
+    cognoms: Optional[str] = None
+    carrec: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class DocumentFaseSchema(BaseModel):
+    id: int
+    contrato_id: int
+    fase: str
+    tipus_document: Optional[str] = None
+    titol: Optional[str] = None
+    document_id: Optional[int] = None
+    hash_document: Optional[str] = None
+    mida: Optional[int] = None
+    url_descarrega: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ContratoDetallat(Contrato):
+    """Resposta enriquida amb totes les relacions."""
+    criteris_adjudicacio: List[CriteriAdjudicacioSchema] = []
+    membres_mesa: List[MembreMesaSchema] = []
+    documents_fase: List[DocumentFaseSchema] = []
+    prorrogues: List['Prorroga'] = []
+    modificacions: List['Modificacion'] = []
+
+    class Config:
+        from_attributes = True
 
 
 class ContratoListItem(BaseModel):
@@ -172,7 +252,7 @@ class ContratoListItem(BaseModel):
     data_inici: Optional[date]
     estat_actual: Optional[str]
     estado_interno: str
-    departamentos: List[Departamento] = []
+    departamento_id: Optional[int]
     data_finalitzacio_calculada: Optional[date] = None
     alerta_finalitzacio: Optional[bool] = False
     possiblement_finalitzat: Optional[bool] = False
@@ -181,9 +261,8 @@ class ContratoListItem(BaseModel):
     num_modificacions: int = 0
     num_lots: int = 1
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
 
 
 # Contratos Menores Schemas
@@ -204,12 +283,12 @@ class ContratoMenorBase(BaseModel):
 
 class ContratoMenorUpdate(BaseModel):
     codi_expedient: Optional[str] = None
-    departamentos_ids: Optional[List[int]] = None
+    departamento_id: Optional[int] = None
     estado_interno: Optional[str] = None
 
 class ContratoMenor(ContratoMenorBase):
     id: int
-    departamentos: List[DepartamentoBase] = []
+    departamento_id: Optional[int] = None
     estado_interno: str = 'normal'
     fecha_ultima_sincronizacion: Optional[datetime]
     datos_json_menor: Optional[dict] = None
@@ -381,11 +460,6 @@ class DashboardStats(BaseModel):
     contratos_posiblemente_finalizados: int  # Contractes possiblement finalitzats
     total_contratos_menores: int = 0
     total_importe_menores: float = 0.0
-    contratos_por_departamento: List[dict] = []
-    temps_mitja_tramitacio_dies: Optional[float] = None
-    licitadors_unics: int = 0
-    renovacions_critiques: List[dict] = []
-
 
 
 # Filtros de búsqueda
@@ -563,6 +637,42 @@ class PlaContractacioEntradaRead(BaseModel):
     codi_expedient: Optional[str] = None   # denormalized from contrato
     creat_per_nom: Optional[str] = None
     creat_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+# ── IA / PPT Schemas ─────────────────────────────────────────────────────────
+
+class ProyectoGeneracionCreate(BaseModel):
+    nombre: str
+
+class DocumentoGeneracionCreate(BaseModel):
+    tipo_documento: str # PPT, PPA, INFORME
+    contingut_json: Optional[str] = "[]"
+    documentos_referencia_json: Optional[str] = "[]"
+
+class DocumentoGeneracionUpdate(BaseModel):
+    contingut_json: Optional[str] = None
+    documentos_referencia_json: Optional[str] = None
+
+class DocumentoGeneracionRead(BaseModel):
+    id: int
+    proyecto_id: int
+    tipo_documento: str
+    contingut_json: str
+    documentos_referencia_json: str
+    fecha_modificacion: datetime
+
+    class Config:
+        from_attributes = True
+
+class ProyectoGeneracionRead(BaseModel):
+    id: int
+    nombre: str
+    fecha_creacion: datetime
+    fecha_modificacion: datetime
+    documentos: List[DocumentoGeneracionRead] = []
 
     class Config:
         from_attributes = True

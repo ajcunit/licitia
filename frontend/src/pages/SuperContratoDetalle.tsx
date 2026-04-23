@@ -16,10 +16,13 @@ import {
     Users,
     Download,
     Layers,
-    Search as SearchIcon
+    Search as SearchIcon,
+    Plus
 } from 'lucide-react';
+import { usePPTCart } from '../context/PPTContext';
 
 export default function SuperContratoDetalle() {
+    const { addDocument } = usePPTCart();
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [contrato, setContrato] = useState<any | null>(null);
@@ -392,16 +395,35 @@ export default function SuperContratoDetalle() {
                                 </h5>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                     {documentsJson.map((doc, i) => (
-                                        <a 
-                                            key={i} 
-                                            href={doc.url} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-primary-300 hover:shadow-lg transition-all group flex items-center justify-between"
-                                        >
-                                            <span className="text-sm font-bold text-slate-700 truncate mr-3 group-hover:text-primary-700">{doc.label}</span>
-                                            <Download size={16} className="text-slate-400 group-hover:text-primary-500 flex-shrink-0" />
-                                        </a>
+                                        <div key={i} className="flex flex-col rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-primary-300 hover:shadow-lg transition-all group overflow-hidden">
+                                            <a 
+                                                href={doc.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="p-4 flex items-center justify-between flex-1"
+                                            >
+                                                <span className="text-sm font-bold text-slate-700 truncate mr-3 group-hover:text-primary-700">{doc.label}</span>
+                                                <Download size={16} className="text-slate-400 group-hover:text-primary-500 flex-shrink-0" />
+                                            </a>
+                                            <div className="bg-slate-50 border-t border-slate-100 p-2 flex justify-end">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        addDocument({
+                                                            id: `${contrato?.codi_expedient}-sbd-${i}`,
+                                                            url: doc.url,
+                                                            titol: doc.label,
+                                                            expedient: contrato?.codi_expedient || 'Desconegut',
+                                                            origen: 'SuperBuscador'
+                                                        });
+                                                    }}
+                                                    className="btn btn-primary text-xs py-1 px-3"
+                                                >
+                                                    <Plus size={14} className="mr-1"/>
+                                                    Usar de Plantilla
+                                                </button>
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
                             </div>

@@ -22,7 +22,7 @@ def get_config(clave: str, db: Session = Depends(get_db)):
     if not cfg:
         # Check if it's one of the defaults we want to return
         if clave == "ollama_url":
-            return {"id": 0, "clave": "ollama_url", "valor": "http://localhost:11434", "descripcion": "URL de l'API d'Ollama", "updated_at": None}
+            return {"id": 0, "clave": "ollama_url", "valor": "http://host.docker.internal:11434", "descripcion": "URL de l'API d'Ollama", "updated_at": None}
         if clave == "cpv_api_url":
             return {"id": 0, "clave": "cpv_api_url", "valor": "https://analisi.transparenciacatalunya.cat/resource/wxdw-5eyv.json?$limit=50000", "descripcion": "URL de l'API de CPVs (Open Data)", "updated_at": None}
         if clave == "ollama_model":

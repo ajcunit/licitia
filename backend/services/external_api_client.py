@@ -48,12 +48,16 @@ class ExternalAPIClient:
             return response.json()
 
     @staticmethod
-    async def fetch_ollama(base_url: str, endpoint: str, payload: dict) -> Any:
-        """POST a Ollama amb rate limit."""
+    async def fetch_ollama(base_url: str, endpoint: str, payload: dict = None, method: str = 'POST') -> Any:
+        """Peticions HTTP a Ollama amb rate limit."""
+        from core.rate_limiter import ai_api_limiter
         async with ai_api_limiter:
             url = f"{base_url.rstrip('/')}/{endpoint.lstrip('/')}"
             async with httpx.AsyncClient(timeout=120.0) as client:
-                response = await client.post(url, json=payload)
+                if method.upper() == 'GET':
+                    response = await client.get(url)
+                else:
+                    response = await client.post(url, json=payload or {})
                 response.raise_for_status()
                 return response.json()
 

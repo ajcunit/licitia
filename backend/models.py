@@ -154,6 +154,61 @@ class Contrato(Base):
     url_json_adjudicacio = Column(Text)
     url_json_formalitzacio = Column(Text)
     url_json_anulacio = Column(Text)
+    
+    # === CAMPS ENRIQUITS (des de JSON de fases) ===
+    
+    # Informació bàsica enriquida
+    normativa_aplicable = Column(String(255))  # LCSP, etc.
+    tipus_publicacio_expedient = Column(String(100))  # Contracte, Acord marc...
+    procediment_adjudicacio = Column(String(255))  # Negociat, Obert...
+    acces_exclusiu = Column(Boolean)
+    tipus_oferta_electronica = Column(String(100))  # Sobre digital...
+    compra_publica_innovacio = Column(Boolean)
+    contracte_mixt = Column(Boolean)
+    te_lots = Column(Boolean)
+    
+    # Licitació
+    contracte_harmonitzat = Column(Boolean)
+    data_termini_presentacio = Column(DateTime)  # Data límit presentació ofertes
+    preveuen_modificacions = Column(Boolean)
+    preveuen_prorrogues = Column(Boolean)
+    causa_habilitant = Column(Text)
+    divisio_lots = Column(String(100))
+    
+    # Garanties
+    garantia_provisional = Column(Boolean)
+    garantia_definitiva = Column(Boolean)
+    percentatge_garantia_definitiva = Column(Numeric(5, 2))
+    reserva_social = Column(Boolean)
+    
+    # Econòmic detallat
+    import_adjudicacio_sense_iva = Column(Numeric(15, 2))
+    iva_percentatge = Column(Numeric(5, 2))
+    valor_estimat_contracte = Column(Numeric(15, 2))
+    revisio_preus = Column(String(255))
+    total_ofertes_rebudes = Column(Integer)
+    
+    # Durada detallada
+    durada_anys = Column(Integer)
+    durada_mesos = Column(Integer)
+    durada_dies = Column(Integer)
+    data_inici_execucio = Column(Date)
+    data_fi_execucio = Column(Date)
+    
+    # Adjudicatari detallat
+    adjudicatari_tipus_empresa = Column(String(100))  # PIME, Gran empresa...
+    adjudicatari_tercer_sector = Column(String(100))
+    adjudicatari_telefon = Column(String(50))
+    adjudicatari_email = Column(String(255))
+    
+    # Subcontractació
+    subcontractacio_permesa = Column(Boolean)
+    
+    # Legal
+    peu_recurs = Column(Text)
+    
+    # Control d'enriquiment
+    fecha_enriquiment = Column(DateTime)  # Última vegada que es van extreure dades dels JSON
 
 
     # Control interno
@@ -175,6 +230,9 @@ class Contrato(Base):
     prorrogues = relationship("Prorroga", back_populates="contrato", order_by="Prorroga.numero_prorroga")
     modificacions = relationship("Modificacion", back_populates="contrato", order_by="Modificacion.numero_modificacio")
     responsables = relationship("Empleado", secondary=contrato_responsables, backref="contratos_asignados")
+    criteris_adjudicacio = relationship("CriteriAdjudicacio", back_populates="contrato", cascade="all, delete-orphan", order_by="CriteriAdjudicacio.index")
+    membres_mesa = relationship("MembreMesa", back_populates="contrato", cascade="all, delete-orphan")
+    documents_fase = relationship("DocumentFase", back_populates="contrato", cascade="all, delete-orphan")
 
     @property
     def num_prorrogues(self) -> int:
@@ -312,6 +370,50 @@ class Modificacion(Base):
     )
 
     contrato = relationship("Contrato", back_populates="modificacions")
+
+
+class CriteriAdjudicacio(Base):
+    """Criteris d'adjudicació d'un contracte (Preu, Criteris automàtics, Judici de valor)."""
+    __tablename__ = "criteris_adjudicacio"
+
+    id = Column(Integer, primary_key=True, index=True)
+    contrato_id = Column(Integer, ForeignKey("contratos.id", ondelete="CASCADE"), nullable=False)
+    index = Column(Integer, default=0)  # Ordre del criteri
+    criteri_nom = Column(String(500))  # Nom del criteri (Preu, Criteris automàtics...)
+    ponderacio = Column(Numeric(7, 2))  # Pes del criteri (p.ex. 90.00)
+    desglossament_json = Column(JSON)  # Detall: tipusCriteri, puntuació, descripcioCriteri
+
+    contrato = relationship("Contrato", back_populates="criteris_adjudicacio")
+
+
+class MembreMesa(Base):
+    """Membres de la Mesa de Contractació."""
+    __tablename__ = "membres_mesa"
+
+    id = Column(Integer, primary_key=True, index=True)
+    contrato_id = Column(Integer, ForeignKey("contratos.id", ondelete="CASCADE"), nullable=False)
+    nom = Column(String(100))
+    cognoms = Column(String(255))
+    carrec = Column(String(255))  # President/a, Secretari/ària, Vocal...
+
+    contrato = relationship("Contrato", back_populates="membres_mesa")
+
+
+class DocumentFase(Base):
+    """Documents associats a cada fase de la contractació."""
+    __tablename__ = "documents_fase"
+
+    id = Column(Integer, primary_key=True, index=True)
+    contrato_id = Column(Integer, ForeignKey("contratos.id", ondelete="CASCADE"), nullable=False)
+    fase = Column(String(50), nullable=False)  # licitacio, avaluacio, adjudicacio, formalitzacio
+    tipus_document = Column(String(100))  # PCAP, PPT, memòria, acta, resolució, contracte...
+    titol = Column(String(500))
+    document_id = Column(Integer)  # ID del document a contractaciopublica.cat
+    hash_document = Column(String(64))  # Hash per verificar integritat
+    mida = Column(Integer)  # Mida en bytes
+    url_descarrega = Column(Text)  # URL construïda per descarregar
+
+    contrato = relationship("Contrato", back_populates="documents_fase")
 
 
 class ContratoMenor(Base):
@@ -482,3 +584,36 @@ class PlaContractacioEntrada(Base):
     creat_per = relationship("Empleado", foreign_keys=[creat_per_id])
     creat_at = Column(DateTime, server_default=func.now())
     actualitzat_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class ProyectoGeneracion(Base):
+    """Projectes per a la generació de documentació."""
+    __tablename__ = "proyectos_generacion"
+
+    id = Column(Integer, primary_key=True, index=True)
+    empleado_id = Column(Integer, ForeignKey("empleados.id", ondelete="CASCADE"), nullable=False)
+    nombre = Column(String(255), nullable=False)
+    fecha_creacion = Column(DateTime, server_default=func.now())
+    fecha_modificacion = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    empleado = relationship("Empleado")
+    documentos = relationship("DocumentoGeneracion", back_populates="proyecto", cascade="all, delete-orphan")
+
+
+class DocumentoGeneracion(Base):
+    """Documents individuals (PPT, PPA, Informe) dins d'un projecte."""
+    __tablename__ = "documentos_generacion"
+
+    id = Column(Integer, primary_key=True, index=True)
+    proyecto_id = Column(Integer, ForeignKey("proyectos_generacion.id", ondelete="CASCADE"), nullable=False)
+    tipo_documento = Column(String(50), nullable=False) # 'PPT', 'PPA', 'INFORME'
+    contingut_json = Column(Text, nullable=False, default="[]") 
+    documentos_referencia_json = Column(Text, nullable=False, default="[]")
+    fecha_creacion = Column(DateTime, server_default=func.now())
+    fecha_modificacion = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (
+        UniqueConstraint('proyecto_id', 'tipo_documento', name='unique_doc_por_proyecto'),
+    )
+
+    proyecto = relationship("ProyectoGeneracion", back_populates="documentos")

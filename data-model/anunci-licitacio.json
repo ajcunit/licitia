@@ -1,0 +1,502 @@
+{
+  "versio" : "1.0.0",
+  "codiExpedient" : "2525/2025",
+  "idExpedient" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+  "dataPublicacioPlanificada" : "2025-05-12T06:21:26.758Z",
+  "organ" : {
+    "nom" : "Ajuntament de Cunit",
+    "nif" : "P4305200J",
+    "direccioPostal" : "C/ Major, 12",
+    "localitat" : "Altres/Diversos, No Consta",
+    "codiPostal" : "99999",
+    "nuts" : "OT",
+    "web" : "www.cunit.cat",
+    "telefon" : "977674080",
+    "fax" : "977674148",
+    "email" : "secretaria@cunit.cat",
+    "personesContacte" : [ {
+      "nom" : "Matilde",
+      "cognom" : "Garcia Gimenez",
+      "carrec" : "Cap de Secció",
+      "telefon" : "977674080",
+      "email" : "secretaria@cunit.cat"
+    } ],
+    "centralCompres" : false,
+    "observacions" : { },
+    "horari" : {
+      "ca" : "De dilluns a divendres, de 9:00 a 13:30 hores"
+    },
+    "organContractacioId" : 12628431
+  },
+  "publicacio" : {
+    "fase" : {
+      "id" : 1000040,
+      "ca" : "Anunci de licitació",
+      "es" : "Anuncio de licitación",
+      "en" : "Tender announcement",
+      "oc" : "Anóncia de licitacion"
+    },
+    "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+    "teLots" : false,
+    "dadesBasiquesPublicacio" : {
+      "fasePublicacio" : {
+        "id" : 1000040,
+        "ca" : "Anunci de licitació",
+        "es" : "Anuncio de licitación",
+        "en" : "Tender announcement",
+        "oc" : "Anóncia de licitacion"
+      },
+      "normativaAplicable" : {
+        "id" : 1008186,
+        "ca" : "LCSP (contractes del sector públic)",
+        "en" : "LCSP (public sector contracts)",
+        "oc" : "LCSP (contractes deth sector public)"
+      },
+      "codiExpedient" : "2525/2025",
+      "denominacio" : {
+        "ca" : "contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "descripcio" : {
+        "ca" : "Contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "observacions" : { },
+      "tipusPublicacioExpedient" : {
+        "id" : 1000000,
+        "ca" : "Contracte",
+        "en" : "Contract",
+        "oc" : "Contracte"
+      },
+      "tipusTramitacio" : {
+        "id" : 470,
+        "ca" : "Ordinària",
+        "es" : "Ordinaria",
+        "en" : "Ordinary",
+        "oc" : "Ordinària"
+      },
+      "tipusContracte" : {
+        "id" : 393,
+        "ca" : "Serveis",
+        "es" : "Servicios",
+        "en" : "Services",
+        "oc" : "Servicis"
+      },
+      "procedimentAdjudicacio" : {
+        "id" : 421,
+        "ca" : "Negociat sense publicitat",
+        "es" : "Negociado sin publicidad",
+        "en" : "Traded without advertising",
+        "oc" : "Negociat sense publicitat"
+      },
+      "publicacioAgregada" : false,
+      "accesExclusiu" : true,
+      "tipusOfertaElectronica" : {
+        "id" : 413,
+        "ca" : "Sobre digital",
+        "es" : "Sobre digital",
+        "en" : "Digital envelope",
+        "oc" : "Envolopa digitau"
+      },
+      "descripcioAltres" : { },
+      "compraPublicaInnovacio" : false,
+      "compraPublicaPrecomercial" : false,
+      "contracteMixt" : false,
+      "justificacioTramitacioUrgencia" : { },
+      "denominacioExpedientReferencia" : { }
+    },
+    "dadesPublicacio" : {
+      "pressupostLicitacio" : 80100.0,
+      "observacions" : { },
+      "contracteHarmonitzat" : false,
+      "dataTerminiPresentacioOSolicitud" : "2025-05-09T21:59:00.000Z",
+      "adrecaElectronicaPresentacioOfertes" : { },
+      "preveuenModificacionsAlsPlecs" : true,
+      "preveuenProrroguesAlsPlecs" : false,
+      "informacioComplementariaProrroga" : { },
+      "informacioComplementariaModificacio" : {
+        "ca" : "Segons apartat M. Modificació del contracte prevista"
+      },
+      "valorEstimatContracte" : 96120.0,
+      "iva" : 21,
+      "varisTipusIva" : false,
+      "pressupostBaseLicitacioAmbIva" : 96921.0,
+      "acpAplicable" : true,
+      "justificacioProcedimentUtilitzat" : { },
+      "plecsDeClausulesAdministratives" : {
+        "ca" : [ {
+          "id" : 301286815,
+          "titol" : "PCAP Internet.pdf",
+          "path" : "r_6HAScnSRstWvT0R3DrvN7gIm41YPNk4sckEwr1JRjUovV6oH9VN2TIf51H08SbL09CZHo_gjBhfY0HtG5cULVXtT0E-EiNZDbePiYIjdZV_K2B7HyFUYw_NyMPhvQwssN1TTlNdlmKwvJ0tNMzVzo0HZO-hR38wUXjf3IeLw74afRems6GyeTQHUMqrNveBFGWm8YwT6gvWW3f9rGdse1vnYKAqX67NBvzDO7rZdWE9Kp2cZREaMtlLOGP1DQrTyi8vZUaO1d4rKPQ2UT1883poufG_SXNBoDXGEWnDdywsgbaT8Lhqb1a-6Bimns535tYpNGeOlX07v5xgwdkzw==",
+          "hash" : "467C264C20BBC525216772E9CCE21C37",
+          "idioma" : "ca",
+          "mida" : 904436
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "plecsDePrescripcionsTecniques" : {
+        "ca" : [ {
+          "id" : 301286816,
+          "titol" : "PPT Internet.pdf",
+          "path" : "ryaN5zAevnqjkoBtQE8IVE0qSaRDybjM_615r2Tl7k_4S0K_SfJIC4xuahAOh-NI7w_Xm_inKOZKjh6fJw-udSuSEWY_x8ptjFolPLsXlgInHdwcNdZ7KCsdBwbGEcrA12aBN72gLFnf3uqcZMDs_R-W4OwZhUeXwuw_75H-jEPROFQW3brUos9zvc5BhsVjr9voog1zrzYpYERcF8iZNik9630WzwSjTmc_5chfhfpGOxejkMgJWF4mZjraX9GC0qHul0sJAOB53pfPm-GthGIYX9PYztIBxy004OPJRkuFVfAPfm_7oKihYDI6u7Th8THE7lb8MDILysrBoOg5UA==",
+          "hash" : "F34857AFDF2597B98B9F37326CF28405",
+          "idioma" : "ca",
+          "mida" : 344726
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "memoriaJustificativaContracte" : {
+        "ca" : [ {
+          "id" : 301286814,
+          "titol" : "Memòria justificativa Internet.pdf",
+          "path" : "VGi3NEfqwJmKetD_HFURCVNTvp7Wu8nxdrpzhCDIN1DA3f-2ExXMcnn7jaSIgl6LOXFE-dLvVzkjeoGPAihkC3g1xm-mywd7oDQb97oDsfojtuCmpdLisTFRy43Sa8tzMY_pNzZ8X54nNwgkCDYP3nf9TVkDTSmSIKhPU3iLnW_qimPjMWxWW8jZFGUlNzxzI5W4TME03Qmw36KkqIydeMkCx7-uGK456tJ1CoxFaqwJugztOeEWa5E3UMKZuG2O1p3beM6AOg-exc7dHt_4BZOFlSAMMubm2gOqNkv-he4imvfZJFMftnFXz6cDi0tpHOWRIaqrL5gKDZJqMkqCrQ==",
+          "hash" : "770FD185F3837DE041EC844E1F329857",
+          "idioma" : "ca",
+          "mida" : 464492
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "documentsAprovacio" : {
+        "ca" : [ {
+          "id" : 301286813,
+          "titol" : "Certificat d'acord.pdf",
+          "path" : "eU0lKx1-nHMEP_U-pm2DezfewXP7ONlNKsrqILbz4GHqtya1c0JDwayIcSY6k5vZjIeDTVU4j0w-qeN1W3UR5MHE51YGtwZZqeeTtcuR4LIE0JWZbAqO74MDI0xopedwInlVBxm6oAFyHdlOE49ihbHdUmbP64H6Sa9nenA6ZcxxN0gyRaQlIUwbhlnflcw9jLN8_UhJr1RsWewdqR8x2AFzm20NgctRvvoOD9MPNVSiXnzOwW8JPI8R5x28H1EX9h1kV4ZbIxkHoFcrqjkcZB-yuiXp9TDBYKkn-Dv7kC4lgfqa6HC5x08RtBQnvT_ARaBh-iegm5j8qdFrmykjGQ==",
+          "hash" : "88826BEC4220F61848B749994A45F0B7",
+          "idioma" : "ca",
+          "mida" : 717825
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "altresDocuments" : {
+        "ca" : [ {
+          "id" : 301286809,
+          "titol" : "ANNEX 1 internet.docx",
+          "path" : "eJy7Key3qVDnoREkGQDRvevS-x0iODon66xlbepP9Yz5RS45CahxYduXaw-Rgdft5xd15jD4pdx8mY7WGWCyZ98Hlu6UGYitD5_JQlT7V33LIMqO6YwRK7s70Houu_XJVQ4SGVbkHkNMlhb93HEoCdz4bl7KwFvGgcmeS9DtQ7qbV1laQ_1JINcb40JRFSd6z2aO1AJZO67FN4rEiBypnMU5yVFZ1W_egv_JRO78j-cSukx2V86NUPUuERMaAQOpC6Z_aUikkCOW_wRKVZBANBXjlqun8aDv48GCqbZuNTFA9tYQsClXgi5h6RIujw8ZQ5vHcqOgVf3FtUD8G2dd5Q==",
+          "hash" : "D0BC5EC3B446C17FC82E1AC4733F2F78",
+          "idioma" : "ca",
+          "mida" : 52422
+        }, {
+          "id" : 301286810,
+          "titol" : "ANNEX 2 internet.docx",
+          "path" : "JY0q9zMSJ-qJqQHPY7NJXHi6I9_7J4ygdj945LVYED0GoOIq-Oix5sr-rurkVPeRICTZRu1K4GiaMD_QbGZCbuHH2-BZkNPd4mIR4auloZzzrzzTvispagkUudDIOGvogukVUObDMwRkpdL0n8vFzCYgD9DTxfgU1j7SYQMGHcWHMlQQCQIFaA1N4nWD8ch_fZyiUgY7_vdSOJfDlm5hjTUXiUacGDllm7iN-ihWz7b6sb4S-RGtqdFqLNGtG9PgM_ZsSmfMvnajdrFOF8KM1jdYhAAJNxKL3ZVbIQYyvdKU2rtLMWfjdQUzJiXS4nyWHkp3khxLROKmKuMrvBOCVA==",
+          "hash" : "8312D9D7CE17C2D33DCC9F8CA3486C70",
+          "idioma" : "ca",
+          "mida" : 46230
+        }, {
+          "id" : 301286811,
+          "titol" : "ANNEX 3 internet.docx",
+          "path" : "V01_Bsb1Rpr1HWRqkIYNqvet1EsxjIVun59vcp65Bb_ioUBV-lHonNgt4VIOCYsmtBCSjxlYUwcB8VqgV7C6H5TCoddgU45vtl9WWcfzXK3JEthM9wB97E1oTPKCGp4Krnmj70N91f6ZgiMW6EqzPOj3cJJuFRuOABpr81kuPqRBQ3_kionMi-VK2Fw7YRhz-Iwg1ySjVGKLGsRxBdxH447SyTj9vu2SeS9nP7qWIKM611klSUoJdMSlIVG8LcgzDXXtkV33sNv_bfVtqHkW_4svS2hHeaA-jEzAONoHknvwSys4a-vBY69MKrgk5FqRYVydt-YtVuOQrMgBFiYDLg==",
+          "hash" : "69F8A424F5FBD0045C0F4A569016E4EB",
+          "idioma" : "ca",
+          "mida" : 46636
+        }, {
+          "id" : 301286812,
+          "titol" : "ANNEX 4 internet.docx",
+          "path" : "jk5Zfx0o_jpYYe-lyNc6UKOAG-T7bjt6-G2QryCS-KyjxMlr0fA7AJPsQDzXY-LlKyfvz9SQWdNk1OiTBjmzzsXs8z0qJOCG7XurEwR66HsjzWoUx4hUyhDnQFIWrMyp0x3M-yHEbJqd5qrpLW5_8IbRUK-Wgx4If636TCtnBhQ04drEzBhjbj1N_F0n48Xez2lmdfYIE0TVYHpceYdI437lAO7KdOsnjm-d9YpGgPEpHdf6zvf4P3nth5Ny0KEaIKoBC0jnL75535QB88W4xSAHg9v6gwTYZkmT4hK0Ohxe8GkHqAJfoQu-sc3AVDXqwPMrULIXmHVJziQYQMD9tw==",
+          "hash" : "AC1BF4448A0A803915564B67D49086E5",
+          "idioma" : "ca",
+          "mida" : 47230
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "llenguesRedactarOfertes" : { },
+      "causaHabilitant" : {
+        "id" : 1008348,
+        "ca" : "Raons tècniques, artístiques, protecció de drets d'exclusiva",
+        "es" : "Razones técnicas, artísticas, protección de derechos de exclusiva",
+        "en" : "Technical, artistic reasons, protection of exclusive rights",
+        "oc" : "Arrasons tecniques, artistiques, emparament de drets d'exclusiva"
+      },
+      "justificacioNoExistenciaLots" : {
+        "id" : 1008190,
+        "ca" : "Art.99.3 b) El fet que la realització independent de les diverses prestacions compreses en l’objecte el contracte en dificulti l’execució correcta des del punt de vista tècnic; o bé que el risc per a l’execució correcta del contracte procedeixi de la naturalesa del seu objecte, en implicar la necessitat de coordinar l’execució de les diferents prestacions, qüestió que es podria veure impossibilitada per la seva divisió en lots i l’execució per una pluralitat de contractistes diferents. Tots dos aspectes, si s’escau, s’han de justificar degudament en l’expedient",
+        "en" : "Art. 99.3.b) The fact that the independent performance of the various services indicated as the purpose of the contract hinders their correct implementation from a technical point of view; or that the risk for the correct implementation of the contract comes from the nature of its purpose, since it involves the need to coordinate the implementation of the various services, an issue that could be made impossible by its division into lots and being undertaken by a plurality of different contractors. Both aspects, if applicable, must be duly justified in the file",
+        "oc" : "Art.99.3 b) Er hèt qu'era realizacion independenta des diuèrses prestacions comprenudes en er objècte eth contracte ne dificulte era execucion corrècta dempús deth punt d'enguarda tecnic; o plan qu'eth risc entara execucion corrècta deth contracte provengue dera natura deth sòn objècte, en implicar eth besonh de coordinar era execucion des diferentes prestacions, ahèr que se poirie veir impossibilitada pera sua division en lòts e era execucion per ua pluralitat de contractistes diferenti. Toti dus aspèctes, se s’esquèr, les cau justificar degudaments en expedient"
+      },
+      "contracteRelacionatFinanciatFonsUnioEuropea" : false,
+      "divisioEnLots" : {
+        "id" : 1008401,
+        "ca" : "Sense lots"
+      },
+      "motiuContracteNoInformatLots" : { },
+      "publicacionsOficials" : [ ],
+      "contractacioConjunta" : false,
+      "peuRecurs" : {
+        "ca" : "Si es vol impugnar aquesta resolució, que posa fi a la via administrativa, procedeix interposar recurs contenciós administratiu davant el Jutjat Contenciós Administratiu de Tarragona, en el termini de dos mesos a comptar des del dia següent de la publicació.\n\nAlternativament i de forma potestativa, es pot interposar recurs de reposició davant el mateix òrgan que l'ha dictat, en el termini d'un mes a comptar des del dia següent de la seva publicació."
+      },
+      "adrecaPresentacioRecurs" : { },
+      "elementsCondicionsOfertesIntegradores" : { }
+    },
+    "dadesPublicacioLot" : [ {
+      "ultimaObertura" : {
+        "dataObertura" : "2025-05-12T09:15:00.000Z",
+        "lloc" : { },
+        "descripcio" : { },
+        "personesAutoritzades" : { },
+        "dataOberturaText" : { },
+        "mostrarDataObertura" : true,
+        "sobre" : {
+          "ca" : "Sobre únic",
+          "es" : "Sobre únic",
+          "en" : "Sobre únic",
+          "oc" : "Sobre únic"
+        }
+      },
+      "pressupostLicitacio" : 80100.0,
+      "publicacioExpedientId" : 300432289,
+      "iva" : 21,
+      "pressupostBaseLicitacioAmbIva" : 96921.0,
+      "varisTipusIva" : false,
+      "valorEstimat" : 96120.0,
+      "canonExplotacio" : { },
+      "calendariEstimatPerPublicacioAnuncisUlterior" : { },
+      "llocExecucio" : {
+        "codiNuts" : "ES514",
+        "ca" : "Cunit"
+      },
+      "duradaTermini" : {
+        "esDurada" : true,
+        "anys" : 3,
+        "mesos" : 0,
+        "dies" : 0,
+        "observacions" : { }
+      },
+      "condicionsExecucio" : [ {
+        "tipusCondicioExecucio" : {
+          "id" : 1008192,
+          "ca" : "Altres condicions d'execució",
+          "en" : "Other conditions of execution",
+          "oc" : "D’autes condicions d'execucion"
+        },
+        "descripcio" : {
+          "ca" : "Segons detall de l'apartat L. del quadre de característiques del PCAP"
+        }
+      } ],
+      "oberturaSobres" : [ {
+        "dataObertura" : "2025-05-12T09:15:00.000Z",
+        "lloc" : { },
+        "descripcio" : { },
+        "personesAutoritzades" : { },
+        "dataOberturaText" : { },
+        "mostrarDataObertura" : true,
+        "sobre" : {
+          "ca" : "Sobre únic",
+          "es" : "Sobre únic",
+          "en" : "Sobre únic",
+          "oc" : "Sobre únic"
+        }
+      } ],
+      "prorroguesPrevistes" : false,
+      "informacioProrrogaComplementaria" : { },
+      "modificacioPrevista" : true,
+      "informacioModificacioComplementaria" : {
+        "ca" : "Segons apartat M. Modificació del contracte prevista"
+      },
+      "acceptaVariants" : false,
+      "elementsVariants" : { },
+      "garantiaProvisional" : false,
+      "garantiaDefinitiva" : true,
+      "reservaSocial" : false,
+      "frequenciaContractesAdjudicar" : { },
+      "justificacioAcordMarc" : { },
+      "solvenciesTecniques" : [ {
+        "criteriSolvencia" : {
+          "id" : 1008234,
+          "ca" : "Altres",
+          "en" : "Others",
+          "oc" : "D’auti"
+        },
+        "valorMinimExigit" : {
+          "ca" : "S’acreditarà mitjançant certificació de la CNT"
+        },
+        "mitjaAcreditacio" : {
+          "id" : 1008251,
+          "ca" : " Documentació acreditativa",
+          "en" : " Supporting documentation",
+          "oc" : " Documentacion acreditatiua"
+        },
+        "descripcioCriteriSolvencia" : {
+          "ca" : "Estar donat d'alta al registre com a operador de telecomunicacions pels serveis objecte de la present licitació."
+        },
+        "descripcioMitjaAcreditacio" : { }
+      } ],
+      "solvenciesEconomiques" : [ {
+        "criteriSolvencia" : {
+          "id" : 1008218,
+          "ca" : "Volum anual de negocis",
+          "en" : "Annual volume of business",
+          "oc" : "Volum annau de negòcis"
+        },
+        "valorMinimExigit" : {
+          "ca" : "Import igual o superior al VEC"
+        },
+        "mitjaAcreditacio" : {
+          "id" : 1008227,
+          "ca" : "Declaració responsable del volum de negocis global de l’empresa",
+          "en" : "Responsible statement of the company's overall business volume",
+          "oc" : "Declaracion responsabla deth volum de negòcis globaus dera empresa"
+        },
+        "descripcioCriteriSolvencia" : { },
+        "descripcioMitjaAcreditacio" : { }
+      }, {
+        "criteriSolvencia" : {
+          "id" : 1008219,
+          "ca" : "Assegurança de responsabilitat civil per riscos professionals",
+          "en" : "Civil liability insurance for professional risks",
+          "oc" : "Assegurança de responsabilitat civiu ta risqui professionaus"
+        },
+        "valorMinimExigit" : {
+          "ca" : "150.000,00€ per sinistre."
+        },
+        "mitjaAcreditacio" : {
+          "id" : 1008225,
+          "ca" : "Pòlissa o certificat d’assegurança per riscos professionals",
+          "en" : "Insurance policy or certificate for professional risks",
+          "oc" : "Polissa o certificat d’assegurança per risqui professionaus"
+        },
+        "descripcioCriteriSolvencia" : { },
+        "descripcioMitjaAcreditacio" : { }
+      } ],
+      "classificacionsEmpresarials" : [ ],
+      "criteriSeleccioNombreCandidats" : { },
+      "nomParticipantsConsiderat" : { },
+      "criterisSeleccioParticipants" : { },
+      "descripcioPagamentsParticipants" : { },
+      "condicionsParticipacio" : {
+        "criterisRelatiusSituacioPersonalOperadorsEconomicsExecucio" : { }
+      },
+      "percentatgeGarantiaDefinitiva" : 5.0,
+      "teDiversosCriterisAdjudicacio" : true,
+      "criterisAdjudicacio" : [ {
+        "index" : 0,
+        "criteri" : {
+          "id" : 1008427,
+          "ca" : "Preu"
+        },
+        "ponderacio" : 90.0,
+        "observacions" : { },
+        "desglossament" : [ {
+          "tipusCriteri" : {
+            "id" : 1008359,
+            "ca" : "Preu",
+            "en" : "Price",
+            "oc" : "Prètz"
+          },
+          "puntuacio" : 90.0,
+          "descripcioCriteri" : { }
+        } ]
+      }, {
+        "index" : 1,
+        "criteri" : {
+          "id" : 1008428,
+          "ca" : "Resta de criteris de valoració automàtica"
+        },
+        "ponderacio" : 10.0,
+        "observacions" : { },
+        "desglossament" : [ {
+          "tipusCriteri" : {
+            "id" : 1008373,
+            "ca" : "Altres criteris qualitatius",
+            "en" : "Other qualitative criteria",
+            "oc" : "D’auti critèris qualitatius"
+          },
+          "puntuacio" : 10.0,
+          "descripcioCriteri" : {
+            "ca" : "Oferir el servei de VLAN mitjançant la seva pròpia infraestructura MOLS per la interconnexió dels diferents centres del client, tant amb accessos FTTH com amb accessos de FO dedicada"
+          }
+        } ]
+      }, {
+        "index" : 2,
+        "criteri" : {
+          "id" : 1008429,
+          "ca" : "Criteris de valoració sotmesos a judici de valor",
+          "es" : "Criterios de valoración sometidos a juicio de valor",
+          "en" : "Valuation criteria subject to value judgment",
+          "oc" : "Critèris d'avaloracion sometudi a jutjament de valor"
+        },
+        "ponderacio" : 0.0,
+        "observacions" : { },
+        "desglossament" : [ ]
+      } ],
+      "cpvPrincipal" : {
+        "codi" : "64200000-8",
+        "ca" : "Serveis de telecomunicacions",
+        "es" : "Servicios de telecomunicaciones",
+        "en" : "Telecommunications services",
+        "oc" : "Servicis de telecomunicacions"
+      },
+      "cpvsSecundaris" : [ ],
+      "garantiaComplementaria" : false,
+      "revisioPreus" : {
+        "id" : 1008438,
+        "ca" : "No prevista revisió de preus"
+      },
+      "llistatPrescripcionsTecniquesSocials" : [ ]
+    } ],
+    "dadesExpedient" : {
+      "organContractacioId" : 12628431,
+      "idiomaPerDefecte" : {
+        "id" : 1000031,
+        "ca" : "Català",
+        "es" : "Catalan",
+        "en" : "Catalan",
+        "oc" : "Catalan"
+      },
+      "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+      "lleiAssociada" : "Llei 2017/2019",
+      "noAdmetrePreguntes" : false,
+      "esPublicacioAntiga" : false,
+      "tipusOfertaElectronica" : 413,
+      "denominacioExpedientReferencia" : { }
+    },
+    "tipusEsmena" : {
+      "id" : 1008194,
+      "ca" : "Data obertura de sobres",
+      "en" : "Envelope opening date",
+      "oc" : "Data dubertura de sobres"
+    },
+    "motiuEsmena" : {
+      "ca" : "Modificació de dades d'obertura"
+    }
+  },
+  "pathPdf" : "oLRFixZa-WqSoD-MUaX7vZApTN6RS5kO3cmKy0thCqKzeQAe6qxo2QoNvLnV09OkW56d05cpVDDQj7KZdaQaapaQBQ01Bcl8eQHGCOBVO52zQxZHyEWMleuOEyUk4nuQ4pgGTkz-IZiW2Rra05rRbjP0FgvtDjPy4HfpN40vN6SmppMJ8M1mUQPvC3BJmzSNejP3a-7t-avyk2OCjSbKeXJhvSGPP6bgYp_oR7qjZ9PE1j7z-Wxuf7o9VPPGlAwQAwvT3cHIn1jxqWz-anoAlUPG9KcdVgYhyTCbAnPsNLH-b7i4AYH2UtGQCcF-cSL-ISmgSFBZP1GZ9pjg7xaUPw==",
+  "pathCertificacio" : "Nu97ZTSwzUgdESCc6kaVoy4QgHmLsQXU4X0A-30TV7bTNp6EMIYOhpWrThaN9Bp1SYwpTI5iA3g6WzfhbtQCdnRaW9wEcxH2sYxD5wI7x7_84cZ6vMIAlxjXeJlA8fViHM0iXcVsMhfc01rgRzDZxkf-UJxyRGjT5EHJM88nFE6uFqnPhKpvyS06dUQ-T3r2ATqttcI6xHB99Fn6YWThCtqBI6wj7oerXtloVlBi9vkoawU0IID4jYBFr5bOXR7RKUyqiVwlRfq1RXfXEQnHCjOhQJwh-47HjjuihEW10wiU2WVaBqruN6q10LmjqqOutTfi-EgLThD7bkp6ok2zrA==",
+  "pathJson" : "Vh2g2auor2mlNkZmI31hRMMuCywY2tVT5sPYyG8rB15SjvMX0KonUZpUCkfRJsdUEz9Tmu31lxR0O7_-fdXydpGKkcd6z_zRm4lYaEtmoRfm9mEl8loOuRx_xmP4r0FTmgyHkN1NZjMtkdHgyhqy-yKLLRHFsKi0r8U8OJPskRbjLdywqqm29iybWXQgy4-BsxeMG-g7sNs8kOKUjPpTXq09EwV0zAqYw-ZxpHRu1By8eSnW7J6VJmxuO-LCEezWBhML3DNTs3QcAebFoCrqAeFipPCSlay4uB65YXlpd_qjtmWl9WZszFFbnsdZgLG2U5pR04g5U03GE9d_kVyiQQ==",
+  "dataPublicacioReal" : "2025-05-12T06:22:06.470Z",
+  "dadesExpedient" : {
+    "organContractacioId" : 12628431,
+    "idiomaPerDefecte" : {
+      "id" : 1000031,
+      "ca" : null,
+      "es" : null,
+      "en" : null,
+      "oc" : null
+    },
+    "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+    "dataFiPublicacioPerfil" : null,
+    "dataFiGestio" : null,
+    "lleiAssociada" : "Llei 2017/2019",
+    "noAdmetrePreguntes" : false,
+    "tenderingSpaceId" : null,
+    "esPublicacioAntiga" : false,
+    "tipusOfertaElectronica" : 413,
+    "dataVisiblePortalAccesExclusiu" : null,
+    "expedientIdReferencia" : null,
+    "codiExpedientReferencia" : null,
+    "denominacioExpedientReferencia" : {
+      "ca" : null,
+      "es" : null,
+      "en" : null,
+      "oc" : null
+    },
+    "nomOrganContractacioReferencia" : null
+  }
+}

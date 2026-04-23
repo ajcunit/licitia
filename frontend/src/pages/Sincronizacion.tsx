@@ -26,6 +26,9 @@ export default function Sincronizacion() {
     const [expandedSyncs, setExpandedSyncs] = useState<Set<number>>(new Set());
     const [syncingMenors, setSyncingMenors] = useState(false);
     const [syncingCpvs, setSyncingCpvs] = useState(false);
+    const [cpvProgress, setCpvProgress] = useState(0);
+    const [cpvMessage, setCpvMessage] = useState('');
+
     const [autoSyncEnabled, setAutoSyncEnabled] = useState(false);
     const [autoSyncTime, setAutoSyncTime] = useState('03:00');
     const [autoSyncTimezone, setAutoSyncTimezone] = useState('Europe/Madrid');
@@ -33,7 +36,35 @@ export default function Sincronizacion() {
     const [savingAutoSync, setSavingAutoSync] = useState(false);
     const [user, setUser] = useState<Empleado | null>(null);
 
+    const [enriching, setEnriching] = useState(false);
+    const [enrichProgress, setEnrichProgress] = useState(0);
+    const [enrichMessage, setEnrichMessage] = useState('');
+
     const canSync = user?.rol === 'admin' || user?.rol === 'responsable_contratacion';
+
+    const handleEnrichBatch = () => {
+        if (!confirm('Això enriquirà tots els contractes històrics de la base de dades. El procés pot trigar una bona estona. Vols continuar?')) return;
+        
+        setEnriching(true);
+        setEnrichProgress(0);
+        setEnrichMessage('Iniciant enriquiment històric...');
+
+        api.startEnrichBatchStream(
+            (msg, pct) => {
+                setEnrichMessage(msg);
+                setEnrichProgress(pct);
+            },
+            (err) => {
+                console.error('Error starting enrich:', err);
+                setEnrichMessage('Error: ' + (err.message || 'Error desconegut'));
+                setEnriching(false);
+            },
+            () => {
+                setEnriching(false);
+                setEnrichMessage('Enriquiment completat amb èxit.');
+            }
+        );
+    };
 
     const toggleDay = (day: string) => {
         setAutoSyncDays(prev => 
@@ -51,34 +82,56 @@ export default function Sincronizacion() {
         { id: 'sun', label: 'Dg' }
     ];
 
-    const handleSyncMenors = async () => {
-        setSyncingMenors(true);
-        try {
-            await api.syncMenores();
-            alert('Sincronització de contractes menors completada amb èxit.');
-        } catch (err) {
-            console.error('Error sincronitzant menors:', err);
-            alert('Hi ha hagut un error en la sincronització de menors.');
-        } finally {
-            setSyncingMenors(false);
+    const [menoresProgress, setMenoresProgress] = useState(0);
+    const [menoresMessage, setMenoresMessage] = useState('');
+
+    const handleSyncMenors = () => {
+        if (!codiIne10) {
+            alert('Error: Codi INE10 no configurat');
+            return;
         }
+        setSyncingMenors(true);
+        setMenoresProgress(0);
+        setMenoresMessage('Connectant...');
+
+        api.startMenoresSyncStream(
+            codiIne10,
+            (msg, pct) => {
+                setMenoresMessage(msg);
+                setMenoresProgress(pct);
+            },
+            (err) => {
+                console.error('Error sincronitzant menors:', err);
+                setMenoresMessage('Error: ' + (err.message || 'Error desconegut'));
+                setSyncingMenors(false);
+            },
+            (stats) => {
+                setSyncingMenors(false);
+                alert(`Sincronització de contractes menors completada amb èxit.\nNous: ${stats.nous}\nActualitzats: ${stats.actualitzats}`);
+            }
+        );
     };
 
-    const handleSyncCpvs = async () => {
+    const handleSyncCpvs = () => {
         setSyncingCpvs(true);
-        try {
-            const res = await api.syncCpvs();
-            if (res.error) {
-                alert(`Hi ha hagut un error: ${res.error}`);
-            } else {
-                alert(`Sincronització de CPVs completada amb èxit.\nNous: ${res.nuevos}\nActualitzats: ${res.actualizados}\nTotal de codis reconeguts: ${res.total}`);
+        setCpvProgress(0);
+        setCpvMessage('Connectant...');
+
+        api.startCpvsSyncStream(
+            (msg, pct) => {
+                setCpvMessage(msg);
+                setCpvProgress(pct);
+            },
+            (err) => {
+                console.error('Error sincronitzant CPVs:', err);
+                setCpvMessage('Error: ' + (err.message || 'Error desconegut'));
+                setSyncingCpvs(false);
+            },
+            (stats) => {
+                setSyncingCpvs(false);
+                alert(`Sincronització de CPVs completada amb èxit.\nNous: ${stats.nuevos}\nActualitzats: ${stats.actualizados}`);
             }
-        } catch (err) {
-            console.error('Error sincronitzant CPVs:', err);
-            alert('Hi ha hagut un error en la sincronització de CPVs.');
-        } finally {
-            setSyncingCpvs(false);
-        }
+        );
     };
 
     useEffect(() => {
@@ -423,6 +476,24 @@ export default function Sincronizacion() {
                         )}
                     </button>
                 </div>
+                {/* Progress bar for CPVs */}
+                {syncingCpvs && (
+                    <div className="mt-4 p-4 rounded-xl bg-primary-50 border border-primary-200">
+                        <div className="flex items-center gap-3 mb-3">
+                            <RefreshCw className="text-primary-600 animate-spin" size={20} />
+                            <div className="flex-1">
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="font-medium text-primary-800">Sincronització CPV en procés...</p>
+                                    <p className="text-sm font-semibold text-primary-600">{cpvProgress}%</p>
+                                </div>
+                                <p className="text-sm text-primary-600">{cpvMessage}</p>
+                            </div>
+                        </div>
+                        <div className="w-full bg-primary-200 rounded-full h-2">
+                            <div className="bg-primary-600 h-2 rounded-full transition-all duration-300" style={{ width: `${cpvProgress}%` }}></div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Sync Panel Menors */}
@@ -452,6 +523,72 @@ export default function Sincronizacion() {
                         )}
                     </button>
                 </div>
+                {/* Progress bar for Menors */}
+                {syncingMenors && (
+                    <div className="mt-4 p-4 rounded-xl bg-primary-50 border border-primary-200">
+                        <div className="flex items-center gap-3 mb-3">
+                            <RefreshCw className="text-primary-600 animate-spin" size={20} />
+                            <div className="flex-1">
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="font-medium text-primary-800">Sincronització en procés...</p>
+                                    <p className="text-sm font-semibold text-primary-600">{menoresProgress}%</p>
+                                </div>
+                                <p className="text-sm text-primary-600">{menoresMessage}</p>
+                            </div>
+                        </div>
+                        <div className="w-full bg-primary-200 rounded-full h-2">
+                            <div className="bg-primary-600 h-2 rounded-full transition-all duration-300" style={{ width: `${menoresProgress}%` }}></div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Enriquiment Històric Panel */}
+            <div className="glass-card p-6 border-l-4 border-l-green-500">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h3 className="text-lg font-semibold text-slate-800">Enriquiment Històric en Batch</h3>
+                        <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+                            Aquest procés forçarà l'enriquiment de <b>tots</b> els contractes històrics de la base de dades. Baixarà documents, membres de la mesa i criteris d'adjudicació. Atenció: Pot trigar hores i descarregarà moltes dades de la Generalitat.
+                        </p>
+                    </div>
+                    <button
+                        className="btn bg-green-600 hover:bg-green-700 text-white gap-2"
+                        onClick={handleEnrichBatch}
+                        disabled={enriching || !canSync}
+                    >
+                        {enriching ? (
+                            <>
+                                <RefreshCw className="animate-spin" size={18} />
+                                Enriquint...
+                            </>
+                        ) : (
+                            <>
+                                <RefreshCw size={18} />
+                                Enriquir Tots
+                            </>
+                        )}
+                    </button>
+                </div>
+                
+                {/* Progress bar for Enrich */}
+                {enriching && (
+                    <div className="mt-4 p-4 rounded-xl bg-green-50 border border-green-200">
+                        <div className="flex items-center gap-3 mb-3">
+                            <RefreshCw className="text-green-600 animate-spin" size={20} />
+                            <div className="flex-1">
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="font-medium text-green-800">Enriquiment en procés...</p>
+                                    <p className="text-sm font-semibold text-green-600">{enrichProgress}%</p>
+                                </div>
+                                <p className="text-sm text-green-600">{enrichMessage}</p>
+                            </div>
+                        </div>
+                        <div className="w-full bg-green-200 rounded-full h-2">
+                            <div className="bg-green-600 h-2 rounded-full transition-all duration-300" style={{ width: `${enrichProgress}%` }}></div>
+                        </div>
+                    </div>
+                )}
             </div>
             {/* Sync Panel */}
             <div className="glass-card p-6">

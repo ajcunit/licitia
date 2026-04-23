@@ -19,7 +19,8 @@ import {
     User,
     ChevronUp,
     Shield,
-    ClipboardList
+    ClipboardList,
+    Layers,
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -74,6 +75,7 @@ export default function Sidebar() {
         { path: '/adjudicatarios', icon: Building2, label: 'Adjudicataris' },
         { path: '/cpv', icon: Search, label: 'Buscador CPV' },
         { path: '/superbuscador', icon: Globe, label: 'SuperBuscador' },
+        { path: '/generador-ppt', icon: Layers, label: 'Generador PPT' },
         { path: '/favoritos', icon: Star, label: 'Favorits' },
         ...(user?.permiso_auditoria || user?.rol === 'admin' 
             ? [{ path: '/auditoria', icon: Flag, label: 'Auditoria/Alertes' }] 

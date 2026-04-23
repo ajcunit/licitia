@@ -12,6 +12,33 @@ logger = logging.getLogger(__name__)
 
 class OllamaService:
     @staticmethod
+    async def get_available_models(db: Session) -> List[str]:
+        config = OllamaService.get_config(db)
+        try:
+            # We fetch from ollama API directly for available models
+            data = await ExternalAPIClient.fetch_ollama(config['url'], 'api/tags', method='GET')
+            if 'models' in data:
+                return [m['name'] for m in data['models']]
+        except Exception as e:
+            logger.error(f"Could not load Ollama models from {config['url']}: {e}")
+        return ["llama3", "mistral", "mixtral", "qwen"]
+
+    @staticmethod
+    async def _call_ollama(db: Session, prompt: str) -> str:
+        config = OllamaService.get_config(db)
+        think_val = OllamaService.get_think_param(db, config['model'])
+        payload = {"model": config['model'], "prompt": prompt, "stream": False}
+        if think_val is not None:
+            payload["think"] = think_val
+
+        try:
+            data = await ExternalAPIClient.fetch_ollama(config['url'], 'api/generate', payload)
+            return data.get("response", "")
+        except Exception as e:
+            logger.error(f"Error direct call to Ollama with payload {payload}: {str(e)}")
+            return ""
+
+    @staticmethod
     def get_config(db: Session, feature: str = "cpv") -> Dict[str, str]:
         url_cfg = db.query(models.Configuracion).filter(models.Configuracion.clave == "ollama_url").first()
         model_clave = f"ollama_model_{feature}"

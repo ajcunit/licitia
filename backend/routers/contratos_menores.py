@@ -10,6 +10,35 @@ from sqlalchemy import or_, func
 from fastapi import Header
 
 router = APIRouter(prefix="/contratos-menores", tags=["contratos-menores"])
+router_public = APIRouter(prefix="/contratos-menores", tags=["contratos-menores"])
+
+@router_public.get("/sincronizar/stream")
+def sincronizar_menores_stream(
+    codi_ine10: str,
+    token: str = Query(..., description="JWT token for authentication"),
+    db: Session = Depends(get_db)
+):
+    from core.security import decode_access_token
+    from jose import JWTError
+    from fastapi.responses import StreamingResponse
+    import json
+    from services.sync_service import SyncService
+    
+    try:
+        payload = decode_access_token(token)
+        email: str = payload.get("sub")
+        if email is None:
+            return StreamingResponse(iter([f'data: {json.dumps({"msg": "Token invàlid", "progress": 100, "error": True})}\n\n']), media_type="text/event-stream")
+        current_user = db.query(models.Empleado).filter(models.Empleado.email == email).first()
+        if not current_user or not current_user.activo:
+            return StreamingResponse(iter([f'data: {json.dumps({"msg": "Usuari invàlid", "progress": 100, "error": True})}\n\n']), media_type="text/event-stream")
+    except JWTError:
+        return StreamingResponse(iter([f'data: {json.dumps({"msg": "Token expirat", "progress": 100, "error": True})}\n\n']), media_type="text/event-stream")
+        
+    if current_user.rol not in ["admin", "responsable_contratacion"]:
+        return StreamingResponse(iter([f'data: {json.dumps({"msg": "No tens permissos", "progress": 100, "error": True})}\n\n']), media_type="text/event-stream")
+
+    return StreamingResponse(SyncService.sync_menores_stream(db, codi_ine10), media_type="text/event-stream")
 
 @router.get("/", response_model=List[schemas.ContratoMenor])
 def list_contratos_menores(

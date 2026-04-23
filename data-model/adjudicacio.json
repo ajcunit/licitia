@@ -1,0 +1,298 @@
+{
+  "versio" : "1.0.0",
+  "codiExpedient" : "2525/2025",
+  "idExpedient" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+  "dataPublicacioPlanificada" : "2025-06-17T12:27:29.121Z",
+  "dataPublicacioReal" : "2025-06-17T12:28:10.933Z",
+  "organ" : {
+    "nom" : "Ajuntament de Cunit",
+    "nif" : "P4305200J",
+    "direccioPostal" : "C/ Major, 12",
+    "localitat" : "Altres/Diversos, No Consta",
+    "codiPostal" : "99999",
+    "nuts" : "OT",
+    "web" : "www.cunit.cat",
+    "telefon" : "977674080",
+    "fax" : "977674148",
+    "email" : "secretaria@cunit.cat",
+    "personesContacte" : [ {
+      "nom" : "Matilde",
+      "cognom" : "Garcia Gimenez",
+      "carrec" : "Cap de Secció",
+      "telefon" : "977674080",
+      "email" : "secretaria@cunit.cat"
+    } ],
+    "centralCompres" : false,
+    "observacions" : { },
+    "horari" : {
+      "ca" : "De dilluns a divendres, de 9:00 a 13:30 hores"
+    },
+    "organContractacioId" : 12628431
+  },
+  "publicacio" : {
+    "fase" : {
+      "id" : 1000042,
+      "ca" : "Adjudicació",
+      "es" : "Adjudicación",
+      "en" : "Adjudication",
+      "oc" : "Adjudicacion"
+    },
+    "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+    "teLots" : false,
+    "dadesBasiquesPublicacio" : {
+      "fasePublicacio" : {
+        "id" : 1000042,
+        "ca" : "Adjudicació",
+        "es" : "Adjudicación",
+        "en" : "Adjudication",
+        "oc" : "Adjudicacion"
+      },
+      "normativaAplicable" : {
+        "id" : 1008186,
+        "ca" : "LCSP (contractes del sector públic)",
+        "en" : "LCSP (public sector contracts)",
+        "oc" : "LCSP (contractes deth sector public)"
+      },
+      "codiExpedient" : "2525/2025",
+      "denominacio" : {
+        "ca" : "contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "descripcio" : {
+        "ca" : "Contractació dels serveis d’un operador de telecomunicacions homologat per tal de proveir a cada una de les seus municipals objecte de la present licitació, d'una connexió a Internet de Banda Ampla"
+      },
+      "observacions" : { },
+      "tipusPublicacioExpedient" : {
+        "id" : 1000000,
+        "ca" : "Contracte",
+        "en" : "Contract",
+        "oc" : "Contracte"
+      },
+      "tipusTramitacio" : {
+        "id" : 470,
+        "ca" : "Ordinària",
+        "es" : "Ordinaria",
+        "en" : "Ordinary",
+        "oc" : "Ordinària"
+      },
+      "tipusContracte" : {
+        "id" : 393,
+        "ca" : "Serveis",
+        "es" : "Servicios",
+        "en" : "Services",
+        "oc" : "Servicis"
+      },
+      "procedimentAdjudicacio" : {
+        "id" : 421,
+        "ca" : "Negociat sense publicitat",
+        "es" : "Negociado sin publicidad",
+        "en" : "Traded without advertising",
+        "oc" : "Negociat sense publicitat"
+      },
+      "publicacioAgregada" : false,
+      "accesExclusiu" : false,
+      "tipusOfertaElectronica" : {
+        "id" : 413,
+        "ca" : "Sobre digital",
+        "es" : "Sobre digital",
+        "en" : "Digital envelope",
+        "oc" : "Envolopa digitau"
+      },
+      "descripcioAltres" : { },
+      "compraPublicaInnovacio" : false,
+      "compraPublicaPrecomercial" : false,
+      "contracteMixt" : false,
+      "justificacioTramitacioUrgencia" : { },
+      "denominacioExpedientReferencia" : { }
+    },
+    "dadesPublicacio" : {
+      "pressupostLicitacio" : 80100.00,
+      "observacions" : { },
+      "valorEstimatContracte" : 96120.00,
+      "iva" : 21,
+      "varisTipusIva" : false,
+      "pressupostBaseLicitacioAmbIVA" : 96921.00,
+      "contracteRelacionatFinanciatFonsUnioEuropea" : false
+    },
+    "dadesPublicacioLot" : [ {
+      "pressupostLicitacio" : 80100.00,
+      "publicacioExpedientId" : 300485274,
+      "dataAdjudicacio" : "2025-06-15T22:00:00.000Z",
+      "terminiFormalitzacioContracte" : {
+        "ca" : "Termini màxim de quinze dies hàbils a partir de la recepció de l’adjudicació"
+      },
+      "importAdjudicacio" : 74017.44,
+      "ofertaAdjudicatariaIncursa" : false,
+      "observacions" : { },
+      "peuDeRecurs" : {
+        "ca" : "Si es vol impugnar aquesta resolució, que posa fi a la via administrativa, procedeix interposar recurs contenciós administratiu davant el Jutjat Contenciós Administratiu de Tarragona, en el termini de dos mesos a comptar des del dia següent de la seva publicació.\nAlternativament i de forma potestativa, es pot interposar recurs de reposició davant el mateix òrgan que l'ha dictat, en el termini d'un mes a comptar des del dia següent de la seva publicació."
+      },
+      "adrecaEnllacMesInformacioRecurs" : { },
+      "empresesAdjudicataries" : [ {
+        "denominacio" : "XARXES DE TELECOMUNICACIONS ALTERNATIVES, SL",
+        "tipusIdentificador" : {
+          "id" : 542,
+          "ca" : "NIF",
+          "en" : "NIF (Tax Identification Number)",
+          "oc" : "NIF"
+        },
+        "identificador" : "B65892200",
+        "tipusEmpresa" : {
+          "id" : 748,
+          "ca" : "PIME",
+          "en" : "SME",
+          "oc" : "PIME"
+        },
+        "pais" : {
+          "id" : 65,
+          "ca" : "Espanya",
+          "es" : "España",
+          "en" : "Spain"
+        },
+        "provincia" : {
+          "id" : 303,
+          "ca" : "Barcelona",
+          "es" : "Barcelona"
+        },
+        "municipi" : {
+          "id" : 1003315,
+          "ca" : "Granada, la"
+        },
+        "tercerSector" : {
+          "id" : 1008406,
+          "ca" : "No tercer sector"
+        },
+        "informacioUte" : [ ]
+      } ],
+      "resolucioAdjudicacio" : {
+        "ca" : [ {
+          "id" : 301391056,
+          "titol" : "CERTIFICAT ADJUDICACIÓ INTERNET 2025-0302 [Certificat 8-2525-2025].pdf",
+          "path" : "kwtjwjzu9_PmR-yqtMLp_Q7DqA5GPryQs6XEq2Dw3tzJwF0K3s8Ds_FvC408hMkr8rGbY5gVsgffne4K3Ch8bkw7hwL3HTsi7Gb-Q0y8-ZwEEFSXzmjLouc2mryr46rRhBi5J__A4DYP1MYNjPNWMA8Yh09Io2GqZAHBlYDR5H02C6J5UaiETtLdLTzqF9gP0DEMbPYEQqaEOS7SQjBvSZWx_ZumxLOGpmXq93DHvl2Iexjgo8Fq4ua8kJ4wGWsTFvzybd-I3w-F7EBOo6XevP32RrcE50zirha5liM42eyb2uoqV1A-FhMFg4mJ1W-7k4FGnRVZRF4em3N5NBiX4A==",
+          "hash" : "314FBFB84CCCF35F4C126AF565F9F765",
+          "idioma" : "ca",
+          "mida" : 319330
+        } ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "altraDocumentacio" : {
+        "ca" : [ ],
+        "es" : [ ],
+        "en" : [ ],
+        "oc" : [ ]
+      },
+      "importAdjudicacioIva" : 89561.10,
+      "ivaAdjudicacio" : 21,
+      "varisTipusIvaAdjudicacio" : false,
+      "valorEstimatContracte" : 96120.00,
+      "iva" : 21,
+      "varisTipusIva" : false,
+      "pressupostBaseLicitacioAmbIVA" : 96921.00,
+      "cpvPrincipal" : {
+        "codi" : "64200000-8",
+        "ca" : "Serveis de telecomunicacions",
+        "es" : "Servicios de telecomunicaciones",
+        "en" : "Telecommunications services",
+        "oc" : "Servicis de telecomunicacions"
+      },
+      "cpvsSecundaris" : [ ],
+      "llocExecucio" : {
+        "codiNuts" : "ES514",
+        "ca" : "Cunit"
+      },
+      "reservaSocial" : false,
+      "duradaTermini" : {
+        "esDurada" : true,
+        "anys" : 3,
+        "mesos" : 0,
+        "dies" : 0,
+        "observacions" : { }
+      },
+      "teDiversosCriterisAdjudicacio" : true,
+      "criterisAdjudicacio" : [ {
+        "index" : 0,
+        "criteri" : {
+          "id" : 1008427,
+          "ca" : "Preu"
+        },
+        "ponderacio" : 90.00,
+        "observacions" : { },
+        "desglossament" : [ {
+          "tipusCriteri" : {
+            "id" : 1008359,
+            "ca" : "Preu",
+            "en" : "Price",
+            "oc" : "Prètz"
+          },
+          "puntuacio" : 90.00,
+          "descripcioCriteri" : { }
+        } ]
+      }, {
+        "index" : 1,
+        "criteri" : {
+          "id" : 1008428,
+          "ca" : "Resta de criteris de valoració automàtica"
+        },
+        "ponderacio" : 10.00,
+        "observacions" : { },
+        "desglossament" : [ {
+          "tipusCriteri" : {
+            "id" : 1008373,
+            "ca" : "Altres criteris qualitatius",
+            "en" : "Other qualitative criteria",
+            "oc" : "D’auti critèris qualitatius"
+          },
+          "puntuacio" : 10.00,
+          "descripcioCriteri" : {
+            "ca" : "Oferir el servei de VLAN mitjançant la seva pròpia infraestructura MOLS per la interconnexió dels diferents centres del client, tant amb accessos FTTH com amb accessos de FO dedicada"
+          }
+        } ]
+      }, {
+        "index" : 2,
+        "criteri" : {
+          "id" : 1008429,
+          "ca" : "Criteris de valoració sotmesos a judici de valor",
+          "es" : "Criterios de valoración sometidos a juicio de valor",
+          "en" : "Valuation criteria subject to value judgment",
+          "oc" : "Critèris d'avaloracion sometudi a jutjament de valor"
+        },
+        "ponderacio" : 0.00,
+        "observacions" : { },
+        "desglossament" : [ ]
+      } ],
+      "revisioPreus" : {
+        "id" : 1008438,
+        "ca" : "No prevista revisió de preus"
+      },
+      "totalOfertesRebudes" : 1,
+      "plurianualitats" : [ ],
+      "llistatPrescripcionsTecniquesSocials" : [ ],
+      "descripcioLicitacio" : { },
+      "subcontractacions" : [ ],
+      "canonExplotacio" : { },
+      "metodeUtilitzatCalculValorEstimat" : { }
+    } ],
+    "dadesExpedient" : {
+      "idiomaPerDefecte" : {
+        "id" : 1000031,
+        "ca" : "Català",
+        "es" : "Catalan",
+        "en" : "Catalan",
+        "oc" : "Catalan"
+      },
+      "expedientId" : "1d65529e-cf61-45c9-8f1b-e7cc9eaee7cd",
+      "lleiAssociada" : "Llei 2017/2019",
+      "noAdmetrePreguntes" : false,
+      "esPublicacioAntiga" : false,
+      "tipusOfertaElectronica" : 413,
+      "dataVisiblePortalAccesExclusiu" : "2025-06-17T12:28:10.933Z",
+      "denominacioExpedientReferencia" : { }
+    },
+    "publicacionsOficials" : [ ],
+    "motiuEsmena" : { }
+  },
+  "pathPdf" : "CyKOJ2QlyzOHO676LhAwiUtxt_1HD6ORc2oUWgeeApRoFWKO8uraCG76yHVDNFBAEkiFXBDRmVSNBQsR0D-tazhePRvKVBt_Tbzf0hlp7cZQbHHWykGsyQVSRG5OhN1oagKrafnE6jPFDEGs1zdWL3BO4UTTyRw6wE1HuN5pD0fN7ZqrjTJ33qlp6Y389NCnKKHnz3Uw5rGPD6wEoICbgijfrk5tmLImVq-P8qey-fEa3DXfoOVfl6r_rkx362ajgRXE5NkYIa4bGpx8om2AnpQQd_ZD_P-3NT0hlHyVn2a_IkkJeACnNwPtkRHTGcDR_daFrUJL4Au2SuFhReqKpg==",
+  "pathCertificacio" : "n8K9If9hvHHo_Gve9Xw86Gto20NC78n4QuEF2h-mJhvEPc9Nxv2QNMB2icdSpP5Wadt80hlZHXBEeaYjqvhgTlnv0P3br4xYdLfT53HOqWrhNV_TS58KJZpsUt-QJeNZGGSDKjIAldwUyTba-uiYzN9tO-ZePtQpD3qH551O1uHwvx38aRVwAoH8CatoQzVxECIfTXdm-TWhS2QiaHiDq9X_EDOJ8oN6haYC2EzYnbuqHGAr_6Ttv5EEUx8k3OyU4D7ik3K6rn7jMMtyAFVWOjU6ATG6d5ifNJQNYOHJ4aGTEq8lYo1U4cERj4TbWFejUEThl7R-IHVFu4BCUzR4Rg==",
+  "pathJson" : "pzkwRoGvq4fndfoMEcEslevOnixmXQm4IXmyr9NYwUgF2W8YzqJvPPW9e40LquIQCAzwXG3NdD_T-f-CYIrDX8wi4smrS6guSsYPjQtQOoeS_LO8b-ncjIYRkvvUCMiZ-Q0XCn7eex_C7AFltMF01uBun7chBvqE0vr0_b7lzwK8Ug3105AjMoacZuzlWjN_j8qAetYdPVh374vTMi2933Xar89G8A5JBfzF3qbqtguFOlHQy7K_B_XnIDjLe3Wnlmm0lHM6Y990l-VY74y_vGl4fGMX2-cBHwxBiZtKwWWcShnPkeaKPgYGcciUFTx7lUEXoktvqmP75XO-NaHzxw=="
+}
